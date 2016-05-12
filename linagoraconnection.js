@@ -16,15 +16,19 @@ function LinagoraConnection(user, password) {
     this.cookie = null;
 }
 
-
-LinagoraConnection.prototype.getPage = function (month, year) {
+/**
+ * Gets the page of the time management for the given month and year.
+ * The page is stored in a file with given file name.
+ * @param month
+ * @param year
+ * @param filename
+ */
+LinagoraConnection.prototype.getPage = function (month, year, filename) {
     var self = this;
-
 
     console.log('On lance la requête sur la page avec année et mois : ' + year + ' ' + month );
 
     var pageUrl = this.appliUrl.replace('%year', year).replace('%month', month);
-
 
     function callback() {
         request(
@@ -43,11 +47,8 @@ LinagoraConnection.prototype.getPage = function (month, year) {
                     console.log(response);
                     
                     var fs = require('fs');
-                    //fs.writeFile('outputresponse.html', response);
-                    fs.writeFile('outputbodyresponse.html', body);
-
+                    fs.writeFile(filename, body);
                 }
-
                );
 
 

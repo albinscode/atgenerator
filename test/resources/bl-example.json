@@ -1,0 +1,45 @@
+{
+    "customerCompany": "Berger-Levrault", 
+    "custmerContact": "M. Rimassa",
+    "customerAddress": "64, rue Jean Rostand <br> 31670 LABEGE", 
+
+    "documentFooterComment": "This allows to inject variables contained within the JSON",
+    "documentFooter": "$$companyFull$$",
+
+    "companyFull": "LINAGORA GSO",
+    "companyShort": "LINAGORA",
+    "companyAddress": "75, route de Revel<br>31000 TOULOUSE",
+    "companyResponsible": "G. Valentin",
+    "companyConsultant": "A. Vigier",
+    "companyPhone": "+33 (0)5 62 19 24 91", 
+    "companyFax": "+33 (0)1 46 96 63 64",
+    "companySiret": "SIRET 414 316 125 000 64", 
+    "companyTVA": "TVA FR87 414 316 125", 
+    "companyCapital": "SA au capital de 166 680 €", 
+
+    "_companyLogoComment": "TODO",
+    "companyLogo": "linagora.png",
+
+    "activityProject": "13977-02", 
+    "activityLabel": "AT 60 jours", 
+    "activityDescription": "Développements modules Espace Clients",
+    "activityDate": null,
+    
+    "_computedFieldsComment": "Here are the computed fields",
+    "activityWeek": "16", 
+    "activityMonth": "Mars", 
+    "activityYear": "2016", 
+    "activityTotal": "3",
+
+    "days": [
+        {"number": "11", "am": true, "pm": true, "description": ""},
+        {"number": "12", "am": true, "pm": true, "description": ""},
+        {"number": "13", "am": true, "pm": true, "description": ""},
+        {"number": "14", "am": false, "pm": false, "description": ""},
+        {"number": "15", "am": false, "pm": false, "description": ""}
+    ]
+    
+
+
+
+}
