@@ -11,7 +11,7 @@ function testParsing() {
     var TimeManagementParser = require('./timemanagementparser');
 
     var parser = new TimeManagementParser();
-    fs.readFile('outputbodyresponse.html', function (err, data) {
+    fs.readFile('test/resources/outputbodyresponse.html', function (err, data) {
         if (err) throw err;
         var daysWorked = parser.parse(data, '20173-01');
         if (daysWorked != null) {
@@ -32,8 +32,10 @@ function testDeclarationFiller() {
     fs.readFile('test/resources/bl-example.json', function (err, data) {
         if (err) throw err;
 
-        var filler = new DeclarationFiller(JSON.parse(data), 'test/resources/bl-template.html', 'test/output');
-        filler.fill();
+        var filler = new DeclarationFiller();
+        var content = filler.fill(JSON.parse(data), 'test/resources/bl-template.html');
+
+        fs.writeFile('test/resources/template-out.html', content);
     });
 }
 
