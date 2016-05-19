@@ -1,14 +1,16 @@
 {
     "customerCompany": "Berger-Levrault", 
-    "custmerContact": "M. Rimassa",
-    "customerAddress": "64, rue Jean Rostand <br> 31670 LABEGE", 
+    "customerContact": "M. Rimassa",
+    "customerAddress1": "64, rue Jean Rostand", 
+    "customerAddress2": "31670 LABEGE", 
 
-    "documentFooterComment": "This allows to inject variables contained within the JSON",
+    "_documentFooterComment": "This allows to inject variables contained within the JSON",
     "documentFooter": "$$companyFull$$",
 
     "companyFull": "LINAGORA GSO",
     "companyShort": "LINAGORA",
-    "companyAddress": "75, route de Revel<br>31000 TOULOUSE",
+    "companyAddress1": "75, route de Revel",
+    "companyAddress2": "31000 TOULOUSE",
     "companyResponsible": "G. Valentin",
     "companyConsultant": "A. Vigier",
     "companyPhone": "+33 (0)5 62 19 24 91", 

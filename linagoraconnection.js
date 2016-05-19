@@ -1,4 +1,5 @@
 var request = require('request');
+var Promise = require('promise');
 
 //require('request-debug')(request);
 
@@ -21,7 +22,8 @@ function LinagoraConnection(user, password) {
  * The page is stored in a file with given file name.
  * @param month
  * @param year
- * @param filename
+ * @param filename writes to the filename the content if provided.
+ * @return a Promise
  */
 LinagoraConnection.prototype.getPage = function (month, year, filename) {
     var self = this;
@@ -30,32 +32,37 @@ LinagoraConnection.prototype.getPage = function (month, year, filename) {
 
     var pageUrl = this.appliUrl.replace('%year', year).replace('%month', month);
 
-    function callback() {
-        request(
-                {
-                    url: pageUrl,
-            jar: true,
-            headers: 
-        {
-            'User-Agent': 'request', 
-            'Cookie': self.cookie,
-
-        }
-                }, 
-                function (error, response, body) {
-                    // Only for debug
-                    console.log(response);
-                    
-                    var fs = require('fs');
-                    fs.writeFile(filename, body);
-                }
-               );
-
-
-    }
-
     // We get the cookie, then we fetch the page
-    this.getCookie(pageUrl, callback);
+    return new Promise(function (resolve, reject) { 
+        console.log('on rentre dans la promesse');
+        self.getCookie(pageUrl).then(function() {
+            console.log('requête');
+            request(
+                    {
+                        url: pageUrl,
+                        jar: true,
+                        headers: {
+                            'User-Agent': 'request', 
+                            'Cookie': self.cookie,
+                        }
+                    }, 
+                    function (error, response, body) {
+                        if (filename) { 
+                            var fs = require('fs');
+                            fs.writeFile(filename, body);
+                            console.log('Content has been written to a file: ' + filename);
+                            // the content is not be sent if written to a file
+                            resolve(null)
+                        } else {
+                            console.log('Content is returned directly as a string');
+                            resolve(response);
+                        }
+                    }
+                   );
+
+
+        });
+    });
 
 }
 
@@ -64,49 +71,56 @@ LinagoraConnection.prototype.getPage = function (month, year, filename) {
 
 /**
  * Enables to retrieve the cookie to access Linagora extranet applications.
+ * @return a Promise after the cookie has been successfully fetched.
  */
-LinagoraConnection.prototype.getCookie = function (page, callback) {
+LinagoraConnection.prototype.getCookie = function (page) {
 
     var self = this;
 
-    // We already have a cookie
-    if (this.cookie != null) return this.cookie;
+    console.log('cookie ??');
+    return new Promise(function (resolve, reject) {
+        console.log('promesse cookie');
+        // We already have a cookie
+        if (self.cookie != null) return resolve(self.cookie);
 
-    console.log('Page à accéder: ' + this.authUrl);
-    
-    // We need to fetch the cookie
-    request(
-            {
-                url: page
-            }, 
-            function (error, response, body) {
-                var urlToken = response.socket._httpMessage.path;
-                console.log('Token récupéré : ' + urlToken);
-                console.log('Page à accéder: ' + self.authUrl);
-                var urlAuth = self.authUrl + urlToken;
-                var urlClean = urlToken.substr(6);
-                console.log('On se connecte à ' + urlAuth);
-                console.log('Url propre ' + urlClean);
+        console.log('Page à accéder: ' + self.authUrl);
+        
+        // We need to fetch the cookie
+        request(
+                {
+                    url: page
+                }, 
+                function (error, response, body) {
+                    console.log('Fetching page');
+                    if (error) reject(error);
+                    var urlToken = response.socket._httpMessage.path;
+                    console.log('Token récupéré : ' + urlToken);
+                    console.log('Page à accéder: ' + self.authUrl);
+                    var urlAuth = self.authUrl + urlToken;
+                    var urlClean = urlToken.substr(6);
+                    console.log('On se connecte à ' + urlAuth);
+                    console.log('Url propre ' + urlClean);
 
-                request.post(
+                    request.post(
 
-                    {
-                        url: urlAuth, 
-                    form: { 
-                        user: self.user, password: self.password, timezone: 2, url: urlClean 
-                    },
-                    }, 
+                        {
+                            url: urlAuth, 
+                            form: { 
+                                user: self.user, password: self.password, timezone: 2, url: urlClean 
+                            },
+                        }, 
 
-                    function (error, response, body) {
-                        var cookieLemonLdapServer = response.headers['set-cookie'][0];
-                        var cookieLemonLdap = cookieLemonLdapServer.split(';')[0]; 
-                        console.log(cookieLemonLdap);
-                        self.cookie = cookieLemonLdap;
-
-                        callback();
-
-                    });
-            });
+                        function (error, response, body) {
+                            if (error) reject(error);
+                            var cookieLemonLdapServer = response.headers['set-cookie'][0];
+                            var cookieLemonLdap = cookieLemonLdapServer.split(';')[0]; 
+                            console.log(cookieLemonLdap);
+                            self.cookie = cookieLemonLdap;
+                            resolve(self.cookie);
+                        });
+                }
+        );
+    });
 }
 
 module.exports = LinagoraConnection;

@@ -31,13 +31,25 @@ TimeManagementParser.prototype.parse = function(data, projectCode) {
 
         console.log('test' + line.html());
         result = [];
+        var index = 0;
         line.find('td').each( function(i, elem) {
-            
+           
+            // Full day
             if ($(this).attr('title') === '100%') {
-                result[i] = true;        
-                console.log('index ' + i + ': one day worked!');
+                result[index] = true;        
+                result[index+1] = true;        
+                index = index + 2;
+                console.log('index ' + i + ': one full day worked!');
+            } 
+            // Half a day
+            else if ($(this).attr('title') === '50%') {
+                result[index] = true;        
+                index = index++;
+                console.log('index ' + i + ': one half full day worked!');
             } else {
-                result[i] = false;
+                result[index] = false;
+                result[index+1] = false;
+                index = index + 2;
             }
         });
     }
