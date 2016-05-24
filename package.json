@@ -4,12 +4,18 @@
   "description": "Allows to generate all your AT activity :)",
   "main": "main.js",
   "dependencies": {
-    "pdfkit": "~0.7.2",
-    "cheerio": "TODO"
+    "mocha": "~2.5.2",
+    "odt": "~1.1.0",
+    "jszip": "~3.0.0",
+    "promise": "~7.1.1",
+    "request-debug": "~0.2.0",
+    "log4js": "~0.6.36",
+    "should": "~8.4.0",
+    "request": "~2.72.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "npm run test"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "BSD-2-Clause"
