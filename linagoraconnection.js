@@ -34,9 +34,7 @@ LinagoraConnection.prototype.getPage = function (month, year, filename) {
 
     // We get the cookie, then we fetch the page
     return new Promise(function (resolve, reject) { 
-        console.log('on rentre dans la promesse');
         self.getCookie(pageUrl).then(function() {
-            console.log('requête');
             request(
                     {
                         url: pageUrl,
@@ -55,7 +53,11 @@ LinagoraConnection.prototype.getPage = function (month, year, filename) {
                             resolve(null)
                         } else {
                             console.log('Content is returned directly as a string');
-                            resolve(response);
+                            var obj = {};
+                            obj.htmlContent = body;
+                            obj.month = month;
+                            obj.year = year;
+                            resolve(obj);
                         }
                     }
                    );
@@ -75,11 +77,10 @@ LinagoraConnection.prototype.getPage = function (month, year, filename) {
  */
 LinagoraConnection.prototype.getCookie = function (page) {
 
+    if (typeof(page) === 'undefined') page = this.authUrl;
     var self = this;
 
-    console.log('cookie ??');
     return new Promise(function (resolve, reject) {
-        console.log('promesse cookie');
         // We already have a cookie
         if (self.cookie != null) return resolve(self.cookie);
 

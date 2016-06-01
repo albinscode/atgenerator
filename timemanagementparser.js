@@ -29,7 +29,7 @@ TimeManagementParser.prototype.parse = function(data, projectCode) {
         console.log("There is no data related to project code " + projectCode);
     } else {
 
-        console.log('test' + line.html());
+        //console.log('test' + line.html());
         result = [];
         var index = 0;
         line.find('td').each( function(i, elem) {

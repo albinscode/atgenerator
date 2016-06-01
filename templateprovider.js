@@ -20,9 +20,15 @@ TemplateProvider.prototype.getFromOdt = function(template) {
         fs.readFile(template, function(err, content) {
             var zip = new JSZip();
             zip.loadAsync(content).then(function(zip) {
-                zip.file('content.xml').async('string').then(function(data) {
-                    console.log('Template successfully fetched: ' + template);
-                    resolve(data);
+                zip.file('content.xml').async('string').then(function(dataContent) {
+                    console.log('Content from template successfully fetched: ' + template);
+                    zip.file('styles.xml').async('string').then(function(dataFooter) {
+                        console.log('Footer from template successfully fetched: ' + template);
+                        var result = new Object();
+                        result.content = dataContent;
+                        result.footer = dataFooter;
+                        resolve(result);
+                    });
                 });
             });
         });
@@ -30,17 +36,19 @@ TemplateProvider.prototype.getFromOdt = function(template) {
 }
 
 /**
- * Updates the content of the template.
+ * Updates the content of the template in a new file.
  * @param the template file name
  * @param the content to update
+ * @param the footer to update
  * @return a Promise to perform after the file write.
  */
-TemplateProvider.prototype.update = function(template, newfile, content) {
+TemplateProvider.prototype.update = function(template, newfile, content, footer) {
     return new Promise(function (resolve, reject) {
         fs.readFile(template, function(err, zipContent) {
             var zip = new JSZip();
             zip.loadAsync(zipContent).then(function(zip) {
                 zip.file('content.xml', content); 
+                zip.file('styles.xml', footer); 
                 // We need to write it to file system
                 zip.generateNodeStream({type:'nodebuffer', streamFiles:true})
                     .pipe(fs.createWriteStream(newfile))

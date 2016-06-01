@@ -14,7 +14,7 @@ describe('>>>> Whole tests', function() {
 
         // To get the content directly as a return
         connection.getPage('04', '2016').then(function(data) {
-            console.log(data);
+            console.log(data.htmlContent);
             done();
         }).should.not.throw();
     });
@@ -52,7 +52,8 @@ describe('>>>> Whole tests', function() {
         var provider = new TemplateProvider();
         
         provider.getFromOdt('test/resources/test.odt').then(function(data) {
-            //console.log(data);
+            console.log(data.content);
+            console.log(data.footer);
             done();
         });
     });
