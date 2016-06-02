@@ -18,10 +18,12 @@ var filler = new DeclarationFiller();
 var TemplateProvider = require('./templateprovider.js');
 var provider= new TemplateProvider();
 
+var date1, date2 = null;
+
 function full(jsonObj, startDate, endDate) {
     
-    var date1 = moment(startDate);
-    var date2 = moment(endDate);
+    date1 = moment(startDate);
+    date2 = moment(endDate);
 
     if (date1.isAfter(date2)) throw new Error('Your period is not valid');
 
@@ -60,9 +62,9 @@ function full(jsonObj, startDate, endDate) {
                             // Note: we cannot use date3 as far as it is changing during the loop and we are async.
                             // So most of the time it was the laste date and we lost all the previous dates.
                             var datePromise = moment();
-                            datePromise.month(data.month);
+                            datePromise.month(data.month - 1);
                             datePromise.year(data.year);
-                            months[datePromise.format('MMYYYY')] = parser.parse(data.htmlContent, jsonObj.activityProject);
+                            convertToObject(months, datePromise.format('MMYYYY'), parser.parse(data.htmlContent, jsonObj.activityProject));
                         })
                     );
                 } catch (e) { console.log(e); }
@@ -72,12 +74,11 @@ function full(jsonObj, startDate, endDate) {
             // We wait for all promises to terminate
             Promise.all(promises).then(function() {
                 // We can now generate files
-
+                console.log(months);
                 console.log('enfin on a fini!');
-                for (var month in months) {
-                    generateDeclarations(month, jsonObj, templateData);
-                    console.log('et un');
-                }
+                try {
+                generateDeclarations(months, jsonObj, templateData);
+                } catch (e) { log.message(e); }
 
 
             });
@@ -100,13 +101,45 @@ function full(jsonObj, startDate, endDate) {
 
 
 /**
- * @param string month in MMYYYY format
+ * @param object months an object that contains all days with morning and afternoon value.
  * @param object jsonObj contains all information ready to inject in the template
  * @param templateData the template to use for the declaration
  */
-function generateDeclarations(month, jsonObj, templateData) {
+function generateDeclarations(months, jsonObj, templateData) {
+    var date3 = moment(date1); 
 
-    console.log('processing month ' + month);
+    console.log("coucou");
+    var days = null;
+    while (date3.isBefore(date2)) {
+        var storedValue = months[date3.format('DDMMYYYY')];
+        if (storedValue === undefined) {
+            console.log("et zut..." + date3.format('DDMMYYYY'));
+            throw new Error('There is a pb with ' + date3.format('DDMMYYYY'));
+        }
+        console.log("test");
+
+        // We start a new week (so a new file
+        if (date3.days() == 1) {
+            console.log("Initializing doc");
+            days = [];
+        }
+        var struct = {};
+        struct.number = date3.format('DD');
+        struct.am = storedValue.am;
+        struct.pm = storedValue.pm;
+        days.push(struct);        
+        
+        if (date3.days() == 5) {
+            // TODO update the doc
+            console.log("update the doc");
+
+            jsonObj.days = days;
+
+            // next week
+            date3.add(2, 'days');
+        }
+        date3.add(1, 'days');
+    }
 }
 
 /**
@@ -116,6 +149,36 @@ function generateDeclarations(month, jsonObj, templateData) {
  */
 function extract(currentDate, endDate, extractObj, jsonObj) {
  
+}
+
+/*
+ * Converts the month array to an object containing keys with DDMMYYYY and a structure with am and pm properties.
+ * @param object
+ * @param format
+ * @param month
+*/
+function convertToObject(object, format, month) {
+    month.map(function(value, key) {
+        var day = ((key / 2 >> 0) + 1);
+        if (day < 10) {
+            day = '0' + day;
+        }
+        var keyString = day + format;
+        var valueObj = object[keyString];
+
+        // The first time we are storing value, so it is "am" value
+        if (valueObj === undefined) {
+            valueObj = {};
+            valueObj.am = value;
+            object[keyString] = valueObj;
+        }
+        // The second time, this is "pm" value
+        else {
+            valueObj.pm = value;
+        }
+
+        //console.log(key + ' ' + value + ' ' + day + format + ' ' + (key / 2 >> 0));
+    });
 }
 
 
