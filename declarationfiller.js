@@ -15,25 +15,37 @@ function DeclarationFiller() {
  */
 DeclarationFiller.prototype.fill = function(data, content) {
 
+    var self = this;
     var templateContent = content;
-    // We browse to inject variables in the footer 
-    Object.keys(data).forEach(function(key) {
-        var value = data[key]; 
-        if (typeof(value) === 'string') {
-            data.documentFooter = replaceall('$$' + key + '$$', value, data.documentFooter);
-        }
-    });
+    // We browse to inject variables in the footer only once (this function is recursive)
+    if (data.documentFooter !== undefined) { 
+        Object.keys(data).forEach(function(key) {
+            var value = data[key]; 
+            if (typeof(value) === 'string') {
+                data.documentFooter = replaceall('$$' + key + '$$', value, data.documentFooter);
+            }
+        });
+    }
     
     
     // We fill all single values automatically
     Object.keys(data).forEach(function(key) {
         var value = data[key]; 
         //console.log(key + ": " + value + " type " + typeof(value));
+        console.log("la clé est " + key);
+        console.log("la valeur est " + value);
 
         // We only have string types to manage
         if (typeof(value) === 'string') {
             templateContent = replaceall('$$' + key + '$$', value, templateContent);
+        } else if (typeof(value) === 'object' && typeof(value) !== undefined && value != null) {
+            try {
+                templateContent = self.fill(value, templateContent);
+            } catch (e) {
+                console.log(e);
+            }
         }
+
     });
 
 

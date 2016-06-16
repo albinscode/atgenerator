@@ -34,11 +34,11 @@
     "activityTotal": "3",
 
     "days": [
-        {"number": "11", "am": true, "pm": true, "description": ""},
-        {"number": "12", "am": true, "pm": true, "description": ""},
-        {"number": "13", "am": true, "pm": true, "description": ""},
-        {"number": "14", "am": false, "pm": false, "description": ""},
-        {"number": "15", "am": false, "pm": false, "description": ""}
+        {"day1": "11", "AM1": true, "PM1": true, "description": ""},
+        {"day2": "12", "AM2": true, "PM2": true, "description": ""},
+        {"day3": "13", "AM3": true, "PM2": true, "description": ""},
+        {"day4": "14", "AM4": false, "PM2": false, "description": ""},
+        {"day5": "15", "AM5": false, "PM2": false, "description": ""}
     ]
     
 

@@ -118,22 +118,31 @@ function generateDeclarations(months, jsonObj, templateData) {
         }
         console.log("test");
 
+        var numberOfDays = date3.days(); 
         // We start a new week (so a new file
-        if (date3.days() == 1) {
+        if (numberOfDays == 1) {
             console.log("Initializing doc");
-            days = [];
+            days = {};
         }
         var struct = {};
-        struct.number = date3.format('DD');
-        struct.am = storedValue.am;
-        struct.pm = storedValue.pm;
-        days.push(struct);        
-        
+        struct['day' + numberOfDays] = date3.format('DD');
+        // TODO for testing purpose
+        if (storedValue.am) {
+            struct['AM' + numberOfDays] = "mega prout";
+        }
+        struct['PM' + numberOfDays] = "on sait pas";//storedValue.pm;
+        //days.push(struct);        
+        days['day' + numberOfDays] = struct;
         if (date3.days() == 5) {
             // TODO update the doc
             console.log("update the doc");
 
             jsonObj.days = days;
+            console.log(jsonObj);
+            var newTemplateContent = filler.fill(jsonObj, templateData.content); 
+            var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
+            
+            provider.update('test/resources/AT_13977-02_CRA_modele.odt', 'output-' + date3.format('DDMMYYYY') + '.odt', newTemplateContent, newTemplateFooter); 
 
             // next week
             date3.add(2, 'days');
