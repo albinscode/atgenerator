@@ -127,10 +127,8 @@ function generateDeclarations(months, jsonObj, templateData) {
         var struct = {};
         struct['day' + numberOfDays] = date3.format('DD');
         // TODO for testing purpose
-        if (storedValue.am) {
-            struct['AM' + numberOfDays] = "mega prout";
-        }
-        struct['PM' + numberOfDays] = "on sait pas";//storedValue.pm;
+        struct['AM' + numberOfDays] = formatCell(storedValue.am, 'AM'); 
+        struct['PM' + numberOfDays] = formatCell(storedValue.pm, 'PM');
         //days.push(struct);        
         days['day' + numberOfDays] = struct;
         if (date3.days() == 5) {
@@ -149,6 +147,16 @@ function generateDeclarations(months, jsonObj, templateData) {
         }
         date3.add(1, 'days');
     }
+}
+
+function formatCell(ifActivated, text) {
+    var result = null; 
+    if (ifActivated) {
+        result = "ok" + text + "ok";
+    } else {
+        result = "ko" + text + "ko";
+    }
+    return result;
 }
 
 /**
