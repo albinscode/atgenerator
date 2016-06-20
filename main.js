@@ -77,24 +77,12 @@ function full(jsonObj, startDate, endDate) {
                 console.log(months);
                 console.log('enfin on a fini!');
                 try {
-                generateDeclarations(months, jsonObj, templateData);
+                    generateDeclarations(months, jsonObj, templateData);
                 } catch (e) { log.message(e); }
 
 
             });
         });
-        // We fetch the corresponding pages
-        //connection.getPage('04', '2016').then(function(htmlContent) {
-
-            // We now know the worked days for this specific project and month
-            //var daysWorked = parser.parse(htmlContent, jsonObj.activityProject);
-
-            //var newTemplateContent = filler.fill(jsonObj, templateData.content); 
-            //var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
-            
-            //provider.update('test/resources/AT_13977-02_CRA_modele.odt', 'output.odt', newTemplateContent, newTemplateFooter); 
-            
-        //});
     
     });
 }
@@ -108,22 +96,33 @@ function full(jsonObj, startDate, endDate) {
 function generateDeclarations(months, jsonObj, templateData) {
     var date3 = moment(date1); 
 
-    console.log("coucou");
+    var originalJsonObj = JSON.parse(JSON.stringify(jsonObj));
     var days = null;
+    // Total of days consumed for this project
+    if (originalJsonObj.activityTotal == null) {
+        originalJsonObj.activityTotal = 0; 
+    }
+    var firstDateOfWeek = null;
     while (date3.isBefore(date2)) {
         var storedValue = months[date3.format('DDMMYYYY')];
+        console.log('Managing ' + date3.format('DDMMYYYY'));
         if (storedValue === undefined) {
-            console.log("et zut..." + date3.format('DDMMYYYY'));
             throw new Error('There is a pb with ' + date3.format('DDMMYYYY'));
         }
-        console.log("test");
 
-        var numberOfDays = date3.days(); 
+        var numberOfDays = date3.day(); 
         // We start a new week (so a new file
-        if (numberOfDays == 1) {
+        if (numberOfDays == 1) { 
+            firstDateOfWeek = moment(date3);
             console.log("Initializing doc");
             days = {};
         }
+        // Number of days consumed
+        if (storedValue.am) {
+            jsonObj.activityTotal = parseInt(jsonObj.activityTotal) + 0.5;
+        }
+        if (storedValue.pm) jsonObj.activityTotal += 0.5;
+
         var struct = {};
         struct['day' + numberOfDays] = date3.format('DD');
         // TODO for testing purpose
@@ -131,16 +130,18 @@ function generateDeclarations(months, jsonObj, templateData) {
         struct['PM' + numberOfDays] = formatCell(storedValue.pm, 'PM');
         //days.push(struct);        
         days['day' + numberOfDays] = struct;
-        if (date3.days() == 5) {
+        if (date3.day() == 5) {
             // TODO update the doc
             console.log("update the doc");
 
             jsonObj.days = days;
+
+            jsonObj = updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
             console.log(jsonObj);
             var newTemplateContent = filler.fill(jsonObj, templateData.content); 
             var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
             
-            provider.update('test/resources/AT_13977-02_CRA_modele.odt', 'output-' + date3.format('DDMMYYYY') + '.odt', newTemplateContent, newTemplateFooter); 
+            provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter); 
 
             // next week
             date3.add(2, 'days');
@@ -149,12 +150,34 @@ function generateDeclarations(months, jsonObj, templateData) {
     }
 }
 
+/**
+ * Updates all specific fields (relative to date like number of week, month, etc...)
+ */
+function updateSpecificFields(date, jsonObj, originalJsonObj) {
+
+    // Current date or specified date
+    if (originalJsonObj.activityDate == null) {
+        jsonObj.activityDate = moment();
+    }
+    jsonObj.activityDate =  String(moment(originalJsonObj.date).format('DD/MM/YYYY'));
+
+    jsonObj.activityWeek = String(date.weeks() - 1);
+    jsonObj.activityMonth = String(date.locale('fr').format('MMMM'));
+    jsonObj.activityYear = String(date.year());
+
+    jsonObj.activityTotal = String(jsonObj.activityTotal);
+    return jsonObj;
+}
+
+/**
+ * Note: this is specific to ODT libreoffice format.
+ */
 function formatCell(ifActivated, text) {
     var result = null; 
     if (ifActivated) {
-        result = "ok" + text + "ok";
+        result = '<text:p text:style-name=\"Présent\">' + text + '</text:p>';
     } else {
-        result = "ko" + text + "ko";
+        result = '<text:p text:style-name=\"Absent\">' + text + '</text:p>';
     }
     return result;
 }

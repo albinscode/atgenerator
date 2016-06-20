@@ -23,6 +23,8 @@ DeclarationFiller.prototype.fill = function(data, content) {
             var value = data[key]; 
             if (typeof(value) === 'string') {
                 data.documentFooter = replaceall('$$' + key + '$$', value, data.documentFooter);
+            } else {
+                console.log(typeof(value));
             }
         });
     }
@@ -32,8 +34,8 @@ DeclarationFiller.prototype.fill = function(data, content) {
     Object.keys(data).forEach(function(key) {
         var value = data[key]; 
         //console.log(key + ": " + value + " type " + typeof(value));
-        console.log("la clé est " + key);
-        console.log("la valeur est " + value);
+        //console.log("la clé est " + key);
+        //console.log("la valeur est " + value);
 
         // We only have string types to manage
         if (typeof(value) === 'string') {
