@@ -94,6 +94,7 @@ function full(jsonObj, startDate, endDate) {
  * @param templateData the template to use for the declaration
  */
 function generateDeclarations(months, jsonObj, templateData) {
+    console.log("Generating declarations");
     var date3 = moment(date1); 
 
     var originalJsonObj = JSON.parse(JSON.stringify(jsonObj));
@@ -103,25 +104,32 @@ function generateDeclarations(months, jsonObj, templateData) {
         originalJsonObj.activityTotal = 0; 
     }
     var firstDateOfWeek = null;
+    var weekTotal = 0;
     while (date3.isBefore(date2)) {
         var storedValue = months[date3.format('DDMMYYYY')];
         console.log('Managing ' + date3.format('DDMMYYYY'));
         if (storedValue === undefined) {
-            throw new Error('There is a pb with ' + date3.format('DDMMYYYY'));
-        }
-
+            console.log('Nothing to perform on this date');
+            storedValue = {};
+            storedValue.am = false;
+            storedValue.pm = false;
+        } 
         var numberOfDays = date3.day(); 
         // We start a new week (so a new file
         if (numberOfDays == 1) { 
             firstDateOfWeek = moment(date3);
             console.log("Initializing doc");
             days = {};
+            weekTotal = parseFloat(jsonObj.activityTotal);
         }
         // Number of days consumed
         if (storedValue.am) {
-            jsonObj.activityTotal = parseInt(jsonObj.activityTotal) + 0.5;
+            jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + 0.5;
         }
-        if (storedValue.pm) jsonObj.activityTotal += 0.5;
+        if (storedValue.pm) {
+            jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + 0.5;
+        }
+        console.log(jsonObj.activityTotal);
 
         var struct = {};
         struct['day' + numberOfDays] = date3.format('DD');
@@ -131,18 +139,22 @@ function generateDeclarations(months, jsonObj, templateData) {
         //days.push(struct);        
         days['day' + numberOfDays] = struct;
         if (date3.day() == 5) {
-            // TODO update the doc
-            console.log("update the doc");
+            // See if we have to generate the doc
+            if ((parseFloat(jsonObj.activityTotal) - weekTotal) > 0) {
+                // TODO update the doc
+                console.log("update the doc");
 
-            jsonObj.days = days;
+                jsonObj.days = days;
 
-            jsonObj = updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
-            console.log(jsonObj);
-            var newTemplateContent = filler.fill(jsonObj, templateData.content); 
-            var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
-            
-            provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter); 
-
+                jsonObj = updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
+                console.log(jsonObj);
+                var newTemplateContent = filler.fill(jsonObj, templateData.content); 
+                var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
+                
+                provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter); 
+            } else {
+                console.log('No activity this week, week ignored');
+            }
             // next week
             date3.add(2, 'days');
         }
@@ -182,15 +194,6 @@ function formatCell(ifActivated, text) {
     return result;
 }
 
-/**
- * @param currentDate
- * @param endDate
- * @param extractObj
- */
-function extract(currentDate, endDate, extractObj, jsonObj) {
- 
-}
-
 /*
  * Converts the month array to an object containing keys with DDMMYYYY and a structure with am and pm properties.
  * @param object
@@ -198,6 +201,7 @@ function extract(currentDate, endDate, extractObj, jsonObj) {
  * @param month
 */
 function convertToObject(object, format, month) {
+    if (month == null) return;
     month.map(function(value, key) {
         var day = ((key / 2 >> 0) + 1);
         if (day < 10) {
@@ -221,12 +225,38 @@ function convertToObject(object, format, month) {
     });
 }
 
+// TODO Function to move in test part
+function convertToObjectTest() {
+
+    var obj = {};
+    var month = [ 
+        true, 
+        true, 
+
+        false, 
+        false, 
+
+        true, 
+        false, 
+
+        false, 
+        true
+    ];
+    convertToObject(obj, '052016', month);
+
+    console.log(obj);
+
+}
 
 require('fs');
 var moment = require('moment');
 
+//convertToObjectTest();
+
+//return;
 fs.readFile('test/resources/bl-example.json', function(err, content) {
-    full(JSON.parse(content), '20160401', '20160503');
+    full(JSON.parse(content), '20160301', '20160630');
+    //full(JSON.parse(content), '20160509', '20160513');
 
 });
 

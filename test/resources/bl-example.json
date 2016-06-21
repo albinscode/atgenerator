@@ -31,7 +31,7 @@
     "activityWeek": "16", 
     "activityMonth": "Mars", 
     "activityYear": "2016", 
-    "activityTotal": "3",
+    "activityTotal": "0",
 
     "days": [
         {"day1": "11", "AM1": true, "PM1": true, "description": ""},
