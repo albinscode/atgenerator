@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var TEMPLATE_FILE_NAME ='test/resources/AT_13977-02_CRA_modele.odt'; 
+var TEMPLATE_FILE_NAME ='test/resources/AT_13977-02_CRA_modele.odt';
 
 // The html parser
 var TimeManagementParser = require('./timemanagementparser');
@@ -14,14 +14,14 @@ var connection = new LinagoraConnection('avigier', 'sabine2014');
 var DeclarationFiller = require('./declarationfiller.js');
 var filler = new DeclarationFiller();
 
-// To get a template    
+// To get a template
 var TemplateProvider = require('./templateprovider.js');
 var provider= new TemplateProvider();
 
 var date1, date2 = null;
 
 function full(jsonObj, startDate, endDate) {
-    
+
     date1 = moment(startDate);
     date2 = moment(endDate);
 
@@ -39,19 +39,19 @@ function full(jsonObj, startDate, endDate) {
     }
 
     console.log('Processing between dates: ' + date1.format() + ' and ' + date2.format());
-    
+
     var months = {};
-   
-    var promises = []; 
+
+    var promises = [];
     // We load the template to use
     provider.getFromOdt(TEMPLATE_FILE_NAME).then(function(templateData) {
-        var date3 = moment(date1);    
+        var date3 = moment(date1);
         date3.date(1);
         console.log(date3.format());
 
         // We get the cookie
         connection.getCookie().then(function() {
-            
+
             // We build an array of promises
             while (date3.isBefore(date2)) {
                 try {
@@ -83,7 +83,7 @@ function full(jsonObj, startDate, endDate) {
 
             });
         });
-    
+
     });
 }
 
@@ -95,13 +95,13 @@ function full(jsonObj, startDate, endDate) {
  */
 function generateDeclarations(months, jsonObj, templateData) {
     console.log("Generating declarations");
-    var date3 = moment(date1); 
+    var date3 = moment(date1);
 
     var originalJsonObj = JSON.parse(JSON.stringify(jsonObj));
     var days = null;
     // Total of days consumed for this project
     if (originalJsonObj.activityTotal == null) {
-        originalJsonObj.activityTotal = 0; 
+        originalJsonObj.activityTotal = 0;
     }
     var firstDateOfWeek = null;
     var weekTotal = 0;
@@ -113,10 +113,10 @@ function generateDeclarations(months, jsonObj, templateData) {
             storedValue = {};
             storedValue.am = false;
             storedValue.pm = false;
-        } 
-        var numberOfDays = date3.day(); 
+        }
+        var numberOfDays = date3.day();
         // We start a new week (so a new file
-        if (numberOfDays == 1) { 
+        if (numberOfDays == 1) {
             firstDateOfWeek = moment(date3);
             console.log("Initializing doc");
             days = {};
@@ -134,9 +134,9 @@ function generateDeclarations(months, jsonObj, templateData) {
         var struct = {};
         struct['day' + numberOfDays] = date3.format('DD');
         // TODO for testing purpose
-        struct['AM' + numberOfDays] = formatCell(storedValue.am, 'AM'); 
+        struct['AM' + numberOfDays] = formatCell(storedValue.am, 'AM');
         struct['PM' + numberOfDays] = formatCell(storedValue.pm, 'PM');
-        //days.push(struct);        
+        //days.push(struct);
         days['day' + numberOfDays] = struct;
         if (date3.day() == 5) {
             // See if we have to generate the doc
@@ -148,10 +148,10 @@ function generateDeclarations(months, jsonObj, templateData) {
 
                 jsonObj = updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
                 console.log(jsonObj);
-                var newTemplateContent = filler.fill(jsonObj, templateData.content); 
-                var newTemplateFooter = filler.fill(jsonObj, templateData.footer); 
-                
-                provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter); 
+                var newTemplateContent = filler.fill(jsonObj, templateData.content);
+                var newTemplateFooter = filler.fill(jsonObj, templateData.footer);
+
+                provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter);
             } else {
                 console.log('No activity this week, week ignored');
             }
@@ -185,7 +185,7 @@ function updateSpecificFields(date, jsonObj, originalJsonObj) {
  * Note: this is specific to ODT libreoffice format.
  */
 function formatCell(ifActivated, text) {
-    var result = null; 
+    var result = null;
     if (ifActivated) {
         result = '<text:p text:style-name=\"Présent\">' + text + '</text:p>';
     } else {
@@ -229,17 +229,17 @@ function convertToObject(object, format, month) {
 function convertToObjectTest() {
 
     var obj = {};
-    var month = [ 
-        true, 
-        true, 
+    var month = [
+        true,
+        true,
 
-        false, 
-        false, 
+        false,
+        false,
 
-        true, 
-        false, 
+        true,
+        false,
 
-        false, 
+        false,
         true
     ];
     convertToObject(obj, '052016', month);
@@ -255,7 +255,7 @@ var moment = require('moment');
 
 //return;
 fs.readFile('test/resources/bl-example.json', function(err, content) {
-    full(JSON.parse(content), '20160301', '20160630');
+    full(JSON.parse(content), '20160301', '20160730');
     //full(JSON.parse(content), '20160509', '20160513');
 
 });
