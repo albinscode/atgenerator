@@ -5,14 +5,15 @@
   "main": "main.js",
   "dependencies": {
     "mocha": "~2.5.2",
-    "odt": "~1.1.0",
     "jszip": "~3.0.0",
     "promise": "~7.1.1",
     "request-debug": "~0.2.0",
     "log4js": "~0.6.36",
     "should": "~8.4.0",
     "request": "~2.72.0",
-    "replaceall": "~0.1.6"
+    "replaceall": "~0.1.6",
+    "cheerio": "~0.20.0",
+    "moment": "~2.13.0"
   },
   "devDependencies": {},
   "scripts": {
