@@ -17,22 +17,23 @@ DeclarationFiller.prototype.fill = function(data, content) {
 
     var self = this;
     var templateContent = content;
-    // We browse to inject variables in the footer only once (this function is recursive)
-    if (data.documentFooter !== undefined) { 
+    // We browse to inject variables in the footer and in the file name pattern only once (this function is recursive)
+    if (data.documentFooter !== undefined) {
         Object.keys(data).forEach(function(key) {
-            var value = data[key]; 
+            var value = data[key];
             if (typeof(value) === 'string') {
                 data.documentFooter = replaceall('$$' + key + '$$', value, data.documentFooter);
+                data.filenamePattern = replaceall('$$' + key + '$$', value, data.filenamePattern);
             } else {
                 console.log(typeof(value));
             }
         });
     }
-    
-    
+
+
     // We fill all single values automatically
     Object.keys(data).forEach(function(key) {
-        var value = data[key]; 
+        var value = data[key];
         //console.log(key + ": " + value + " type " + typeof(value));
         //console.log("la clé est " + key);
         //console.log("la valeur est " + value);

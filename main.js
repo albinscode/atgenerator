@@ -141,7 +141,6 @@ function generateDeclarations(months, jsonObj, templateData) {
         if (date3.day() == 5) {
             // See if we have to generate the doc
             if ((parseFloat(jsonObj.activityTotal) - weekTotal) > 0) {
-                // TODO update the doc
                 console.log("update the doc");
 
                 jsonObj.days = days;
@@ -151,7 +150,13 @@ function generateDeclarations(months, jsonObj, templateData) {
                 var newTemplateContent = filler.fill(jsonObj, templateData.content);
                 var newTemplateFooter = filler.fill(jsonObj, templateData.footer);
 
-                provider.update('test/resources/AT_13977-02_CRA_modele.odt', jsonObj.activityProject + "_" + firstDateOfWeek.format('YYYYMMDD') + '.odt', newTemplateContent, newTemplateFooter);
+                // Replaces the date of weeks
+                var replaceall = require('replaceall');
+                var filenamePattern = jsonObj.filenamePattern;
+                filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
+                filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
+
+                provider.update('test/resources/AT_13977-02_CRA_modele.odt', filenamePattern, newTemplateContent, newTemplateFooter);
             } else {
                 console.log('No activity this week, week ignored');
             }

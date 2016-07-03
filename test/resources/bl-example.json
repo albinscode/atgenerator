@@ -40,9 +40,12 @@
         {"day3": "13", "AM3": true, "PM2": true, "description": ""},
         {"day4": "14", "AM4": false, "PM2": false, "description": ""},
         {"day5": "15", "AM5": false, "PM2": false, "description": ""}
-    ]
+    ],
 
+    "patternDateFormat": "YYYYMMDD",
 
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "filenamePattern": "$$activityProject$$_$$lastDayOfWeek$$.odt"
 
 
 }
