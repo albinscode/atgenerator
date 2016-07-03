@@ -8,7 +8,6 @@ var parser = new TimeManagementParser();
 
 // The http connection to linagora time management application
 var LinagoraConnection = require('./linagoraconnection');
-var connection = new LinagoraConnection('avigier', 'sabine2014');
 
 // The declaration filler
 var DeclarationFiller = require('./declarationfiller.js');
@@ -20,7 +19,13 @@ var provider= new TemplateProvider();
 
 var date1, date2 = null;
 
-function full(jsonObj, startDate, endDate) {
+/**
+ * @param jsonObj the json input object containing all data to inject
+ * @param fileTemplate the file to use for reporting (an ODT file)
+ * @param startDate the start date at which generating the report
+ * @param endDate the end date at which generating the report
+ */
+function full(jsonObj, fileTemplate, startDate, endDate) {
 
     date1 = moment(startDate);
     date2 = moment(endDate);
@@ -77,7 +82,7 @@ function full(jsonObj, startDate, endDate) {
                 console.log(months);
                 console.log('enfin on a fini!');
                 try {
-                    generateDeclarations(months, jsonObj, templateData);
+                    generateDeclarations(months, jsonObj, templateData, fileTemplate);
                 } catch (e) { log.message(e); }
 
 
@@ -92,8 +97,9 @@ function full(jsonObj, startDate, endDate) {
  * @param object months an object that contains all days with morning and afternoon value.
  * @param object jsonObj contains all information ready to inject in the template
  * @param templateData the template to use for the declaration
+ * @param fileTemplate the file to use for reporting (an ODT file)
  */
-function generateDeclarations(months, jsonObj, templateData) {
+function generateDeclarations(months, jsonObj, templateData, fileTemplate) {
     console.log("Generating declarations");
     var date3 = moment(date1);
 
@@ -156,7 +162,7 @@ function generateDeclarations(months, jsonObj, templateData) {
                 filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
                 filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
 
-                provider.update('test/resources/AT_13977-02_CRA_modele.odt', filenamePattern, newTemplateContent, newTemplateFooter);
+                provider.update(fileTemplate, filenamePattern, newTemplateContent, newTemplateFooter);
             } else {
                 console.log('No activity this week, week ignored');
             }
@@ -230,37 +236,17 @@ function convertToObject(object, format, month) {
     });
 }
 
-// TODO Function to move in test part
-function convertToObjectTest() {
-
-    var obj = {};
-    var month = [
-        true,
-        true,
-
-        false,
-        false,
-
-        true,
-        false,
-
-        false,
-        true
-    ];
-    convertToObject(obj, '052016', month);
-
-    console.log(obj);
-
-}
-
 require('fs');
 var moment = require('moment');
 
-//convertToObjectTest();
+// TODO four variables to inject
 
+//convertToObjectTest();
+var fileTemplate = 'test/resources/AT_13977-02_CRA_modele.odt';
+var connection = new LinagoraConnection('avigier', 'sabine2014');
 //return;
 fs.readFile('test/resources/bl-example.json', function(err, content) {
-    full(JSON.parse(content), '20160301', '20160730');
+    full(JSON.parse(content), fileTemplate, '20160301', '20160730');
     //full(JSON.parse(content), '20160509', '20160513');
 
 });

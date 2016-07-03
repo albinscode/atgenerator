@@ -34,7 +34,7 @@ describe('>>>> Whole tests', function() {
         });
     });
     it('should fill', function(done) {
-        
+
         var DeclarationFiller = require('../declarationfiller.js');
 
         fs.readFile('test/resources/bl-example.json', function (err, data) {
@@ -50,7 +50,7 @@ describe('>>>> Whole tests', function() {
 
         var TemplateProvider = require('../templateprovider.js');
         var provider = new TemplateProvider();
-        
+
         provider.getFromOdt('test/resources/test.odt').then(function(data) {
             console.log(data.content);
             console.log(data.footer);
@@ -61,10 +61,33 @@ describe('>>>> Whole tests', function() {
 
         var TemplateProvider = require('../templateprovider.js');
         var provider = new TemplateProvider();
-        
+
         provider.update('test/resources/test.odt', 'test/resources/test2.odt', 'mon nouveau content').then(function() {
             done();
-        }); 
+        });
+    });
+    if('Should convert the array', function(done) {
+        // TODO See how to test without a require (thus no class description of main.js)
+        function convertToObjectTest() {
+
+            var obj = {};
+            var month = [
+                true,
+                true,
+
+                false,
+                false,
+
+                true,
+                false,
+
+                false,
+                true
+            ];
+            convertToObject(obj, '052016', month);
+
+            console.log(obj);
+        }
     });
 
 });
