@@ -1,8 +1,8 @@
 {
-    "customerCompany": "Berger-Levrault", 
+    "customerCompany": "Berger-Levrault",
     "customerContact": "M. Rimassa",
-    "customerAddress1": "64, rue Jean Rostand", 
-    "customerAddress2": "31670 LABEGE", 
+    "customerAddress1": "64, rue Jean Rostand",
+    "customerAddress2": "31670 LABEGE",
 
     "_documentFooterComment": "This allows to inject variables contained within the JSON",
     "documentFooter": "$$companyFull$$",
@@ -13,24 +13,25 @@
     "companyAddress2": "31000 TOULOUSE",
     "companyResponsible": "G. Valentin",
     "companyConsultant": "A. Vigier",
-    "companyPhone": "+33 (0)5 62 19 24 91", 
+    "companyPhone": "+33 (0)5 62 19 24 91",
     "companyFax": "+33 (0)1 46 96 63 64",
-    "companySiret": "SIRET 414 316 125 000 64", 
-    "companyTVA": "TVA FR87 414 316 125", 
-    "companyCapital": "SA au capital de 166 680 €", 
+    "companySiret": "SIRET 414 316 125 000 64",
+    "companyTVA": "TVA FR87 414 316 125",
+    "companyCapital": "SA au capital de 166 680 €",
 
     "_companyLogoComment": "TODO",
     "companyLogo": "linagora.png",
 
-    "activityProject": "13977-02", 
-    "activityLabel": "AT 60 jours", 
+    "activityProject": "13977-02",
+    "activityLabel": "AT 60 jours",
     "activityDescription": "Développements modules Espace Clients",
     "activityDate": null,
-    
+    "orderNumber": "CA114850",
+
     "_computedFieldsComment": "Here are the computed fields",
-    "activityWeek": "16", 
-    "activityMonth": "Mars", 
-    "activityYear": "2016", 
+    "activityWeek": "16",
+    "activityMonth": "Mars",
+    "activityYear": "2016",
     "activityTotal": "0",
 
     "days": [
@@ -40,7 +41,7 @@
         {"day4": "14", "AM4": false, "PM2": false, "description": ""},
         {"day5": "15", "AM5": false, "PM2": false, "description": ""}
     ]
-    
+
 
 
 
