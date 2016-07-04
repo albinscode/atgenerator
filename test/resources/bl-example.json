@@ -1,4 +1,8 @@
 {
+    "startDate": "20160404",
+    "endDate": "20160702",
+    "odtTemplate": "test/resources/AT_13977-02_CRA_modele.odt",
+
     "customerCompany": "Berger-Levrault",
     "customerContact": "M. Rimassa",
     "customerAddress1": "64, rue Jean Rostand",
