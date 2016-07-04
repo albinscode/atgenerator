@@ -13,7 +13,8 @@
     "request": "~2.72.0",
     "replaceall": "~0.1.6",
     "cheerio": "~0.20.0",
-    "moment": "~2.13.0"
+    "moment": "~2.13.0",
+    "commander": "~2.9.0"
   },
   "devDependencies": {},
   "scripts": {
