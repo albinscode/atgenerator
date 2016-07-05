@@ -1,4 +1,6 @@
 var log = require('./logbridge');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
 
 // The html parser
 var TimeManagementParser = require('./timemanagementparser');
@@ -92,7 +94,7 @@ function ActivityGenerator() {
                     filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
 
                     log.info('generator', 'Writing file %j', filenamePattern);
-                    provider.update(jsonObj.odtTemplate, filenamePattern, newTemplateContent, newTemplateFooter);
+                    provider.update(jsonObj.odtTemplate, jsonObj.filepath + '/' + filenamePattern, newTemplateContent, newTemplateFooter);
                 } else {
                     log.verbose('generator', 'No activity this week, week ignored');
                 }
@@ -193,6 +195,14 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
     }
 
     log.info('generator', 'Processing between dates: %j and %j', this.date1.format(), this.date2.format());
+
+    log.verbose('generator', 'Creating needed directories');
+    fs.lstat(jsonObj.filepath, function(err) {
+        if (err) {
+            mkdirp(jsonObj.filepath);
+            log.verbose('generator', 'filepath created');
+        }
+    });
 
     var connection = new LinagoraConnection(user, password);
 

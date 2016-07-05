@@ -3,6 +3,11 @@
     "endDate": "20160702",
     "odtTemplate": "test/resources/AT_13977-02_CRA_modele.odt",
 
+    "patternDateFormat": "YYYYMMDD",
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "filenamePattern": "$$activityProject$$_$$lastDayOfWeek$$.odt",
+    "filepath": "output/avi"
+
     "customerCompany": "Berger-Levrault",
     "customerContact": "M. Rimassa",
     "customerAddress1": "64, rue Jean Rostand",
@@ -45,11 +50,6 @@
         {"day4": "14", "AM4": false, "PM2": false, "description": ""},
         {"day5": "15", "AM5": false, "PM2": false, "description": ""}
     ],
-
-    "patternDateFormat": "YYYYMMDD",
-
-    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
-    "filenamePattern": "$$activityProject$$_$$lastDayOfWeek$$.odt"
 
 
 }
