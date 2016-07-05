@@ -223,7 +223,7 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
                 try {
                     promises.push(
                         // We fetch the corresponding pages
-                        connection.getPage(date3.month() + 1, date3.year()).then(function(data) {
+                        connection.getTimePage(date3.month() + 1, date3.year()).then(function(data) {
                             // We now know the worked days for this specific project and month
                             // Note: we cannot use date3 as far as it is changing during the loop and we are async.
                             // So most of the time it was the laste date and we lost all the previous dates.
