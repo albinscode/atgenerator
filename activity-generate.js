@@ -20,6 +20,7 @@ var ActivityGenerator = require('./activitygenerator');
 
 var generator = new ActivityGenerator();
 
+
 fs.readFile(program.json, function(err, content) {
     generator.generate(JSON.parse(content), program.user, program.password);
 });

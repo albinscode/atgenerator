@@ -1,3 +1,4 @@
+var log = require('./logbridge');
 
 // The html parser
 var TimeManagementParser = require('./timemanagementparser');
@@ -29,8 +30,7 @@ function ActivityGenerator() {
      * @param templateData the template to use for the declaration
      */
     this.generateDeclarations = function(months, jsonObj, templateData) {
-        console.log("Generating declarations");
-        console.log(self.date1);
+        log.verbose('generator', "Generating declarations");
         var date3 = moment(jsonObj.startDate);
         var originalJsonObj = JSON.parse(JSON.stringify(jsonObj));
         var days = null;
@@ -42,9 +42,9 @@ function ActivityGenerator() {
         var weekTotal = 0;
         while (date3.isBefore(self.date2)) {
             var storedValue = months[date3.format('DDMMYYYY')];
-            console.log('Managing ' + date3.format('DDMMYYYY'));
+            log.verbose('generator', 'Managing ' + date3.format('DDMMYYYY'));
             if (storedValue === undefined) {
-                console.log('Nothing to perform on this date');
+                log.verbose('generator', 'Nothing to perform on this date');
                 storedValue = {};
                 storedValue.am = false;
                 storedValue.pm = false;
@@ -53,7 +53,7 @@ function ActivityGenerator() {
             // We start a new week (so a new file
             if (numberOfDays == 1) {
                 firstDateOfWeek = moment(date3);
-                console.log("Initializing doc");
+                log.verbose('generator', 'Initializing doc');
                 days = {};
                 weekTotal = parseFloat(jsonObj.activityTotal);
             }
@@ -64,7 +64,7 @@ function ActivityGenerator() {
             if (storedValue.pm) {
                 jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + 0.5;
             }
-            console.log(jsonObj.activityTotal);
+            log.verbose('generator', jsonObj.activityTotal);
 
             var struct = {};
             struct['day' + numberOfDays] = date3.format('DD');
@@ -76,12 +76,12 @@ function ActivityGenerator() {
             if (date3.day() == 5) {
                 // See if we have to generate the doc
                 if ((parseFloat(jsonObj.activityTotal) - weekTotal) > 0) {
-                    console.log("update the doc");
+                    log.verbose('generator', "update the doc");
 
                     jsonObj.days = days;
 
                     jsonObj = this.updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
-                    console.log(jsonObj);
+                    log.verbose('generator', jsonObj);
                     var newTemplateContent = filler.fill(jsonObj, templateData.content);
                     var newTemplateFooter = filler.fill(jsonObj, templateData.footer);
 
@@ -91,9 +91,10 @@ function ActivityGenerator() {
                     filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
                     filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
 
+                    log.info('generator', 'Writing file %j', filenamePattern);
                     provider.update(jsonObj.odtTemplate, filenamePattern, newTemplateContent, newTemplateFooter);
                 } else {
-                    console.log('No activity this week, week ignored');
+                    log.verbose('generator', 'No activity this week, week ignored');
                 }
                 // next week
                 date3.add(2, 'days');
@@ -161,7 +162,7 @@ function ActivityGenerator() {
                 valueObj.pm = value;
             }
 
-            //console.log(key + ' ' + value + ' ' + day + format + ' ' + (key / 2 >> 0));
+            log.verbose('generator', '%j %j %j %j %j', key ,value, day, format, (key / 2 >> 0));
         });
     }
 
@@ -183,15 +184,15 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
     // A start date must start on the previous monday
     if (this.date1.days() > 1) {
        this.date1.add(-this.date1.days() + 1, 'days');
-       console.log(this.date1.format());
+       log.verbose('generator', 'Start date computed %j', this.date1.format());
     }
     // An end date must end on friday
     if (this.date2.days() < 5) {
         this.date2.add(5 - this.date2.days(), 'days');
-        console.log(this.date2.format());
+        log.verbose('generator', 'End date computed %j', this.date2.format());
     }
 
-    console.log('Processing between dates: ' + this.date1.format() + ' and ' + this.date2.format());
+    log.info('generator', 'Processing between dates: %j and %j', this.date1.format(), this.date2.format());
 
     var connection = new LinagoraConnection(user, password);
 
@@ -202,7 +203,7 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
     provider.getFromOdt(jsonObj.odtTemplate).then(function(templateData) {
         var date3 = moment(self.date1);
         date3.date(1);
-        console.log(date3.format());
+        log.verbose('generator', date3.format());
 
         // We get the cookie
         connection.getCookie().then(function() {
@@ -219,18 +220,20 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
                             var datePromise = moment();
                             datePromise.month(data.month - 1);
                             datePromise.year(data.year);
-                            self.convertToObject(months, datePromise.format('MMYYYY'), parser.parse(data.htmlContent, jsonObj.activityProject));
+                            var datePromiseFormat = datePromise.format('MMYYYY');
+                            log.info('generator', 'Parsing month %j', datePromiseFormat);
+                            self.convertToObject(months, datePromiseFormat, parser.parse(data.htmlContent, jsonObj.activityProject));
                         })
                     );
-                } catch (e) { console.log(e); }
+                } catch (e) { log.error('generator', e); }
                 date3.add(1, 'months');
             }
 
             // We wait for all promises to terminate
             Promise.all(promises).then(function() {
                 // We can now generate files
-                console.log(months);
-                console.log('enfin on a fini!');
+                log.verbose('generator', months);
+                log.verbose('generator', 'we finished all promises');
                 try {
                     self.generateDeclarations(months, jsonObj, templateData);
                 } catch (e) { log.message(e); }

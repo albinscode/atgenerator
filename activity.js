@@ -1,3 +1,7 @@
+var log = require('./logbridge');
+
+log.info('| -- Welcome to activity utilities --|');
+
 // This is the main command to run the utilities
 var program = require('commander');
 program

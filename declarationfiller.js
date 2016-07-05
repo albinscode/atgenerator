@@ -1,4 +1,5 @@
 var replaceall = require("replaceall");
+var log = require('./logbridge');
 
 /**
  * This allows to fill a template that contains variables surrounded with $$.
@@ -25,7 +26,7 @@ DeclarationFiller.prototype.fill = function(data, content) {
                 data.documentFooter = replaceall('$$' + key + '$$', value, data.documentFooter);
                 data.filenamePattern = replaceall('$$' + key + '$$', value, data.filenamePattern);
             } else {
-                console.log(typeof(value));
+                log.verbose('filler', typeof(value));
             }
         });
     }
@@ -34,9 +35,7 @@ DeclarationFiller.prototype.fill = function(data, content) {
     // We fill all single values automatically
     Object.keys(data).forEach(function(key) {
         var value = data[key];
-        //console.log(key + ": " + value + " type " + typeof(value));
-        //console.log("la clé est " + key);
-        //console.log("la valeur est " + value);
+        log.verbose('filler', 'key %j, value %j, type %j', key, value, typeof(value));
 
         // We only have string types to manage
         if (typeof(value) === 'string') {
@@ -45,7 +44,7 @@ DeclarationFiller.prototype.fill = function(data, content) {
             try {
                 templateContent = self.fill(value, templateContent);
             } catch (e) {
-                console.log(e);
+                log.error('filler', e);
             }
         }
 
