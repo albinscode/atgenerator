@@ -2,9 +2,8 @@
 var program = require('commander');
 program
     .version('1.0.0')
-    .option('-u --user [user]', 'user to connect to OBM service')
+    .option('-u --user <user>', 'user to connect to OBM service')
     .option('-p --password <password>', 'password to connect to OBM service')
-    //.option('-t --template [value]', 'odt template to use for report')
     .option('-j --json <json>', 'json data to use for report')
     .parse(process.argv);
 
