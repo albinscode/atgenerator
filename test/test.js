@@ -66,6 +66,26 @@ describe('>>>> Whole tests', function() {
             done();
         });
     });
+    it('Should check the dates', function(done) {
+
+        var ActivityGenerator = require('../activitygenerator.js');
+        var generator = new ActivityGenerator();
+        var moment = require('moment');
+        function checkDates(date1, date2) {
+            generator.date1 = moment(date1);
+            generator.date2 = moment(date2);
+            generator.checkDates();
+        }
+        checkDates('20160101', '20160203');
+        moment('20151228').isSame(generator.date1).should.be.true();
+        moment('20160205').isSame(generator.date2).should.be.true();
+
+        //checkDates('20160203', '20160103').should.throw();
+
+        // Dates after the processing
+        console.log(generator.date1.format('DDMMYYY') + ' ' + generator.date2.format('DDMMYYY'));
+        done();
+    });
     if('Should convert the array', function(done) {
         // TODO See how to test without a require (thus no class description of main.js)
         function convertToObjectTest() {
