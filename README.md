@@ -2,12 +2,10 @@
 RUNNING
 =======
 
-`
-USER=myuser
-PASSWORD=mypassword
-JSON='test/resources/bl-example.json'
-nodejs activity.js generate -u $USER -p $PASSWORD -j $JSON
-`
+    USER=myuser
+    PASSWORD=mypassword
+    JSON='test/resources/bl-example.json'
+    nodejs activity.js generate -u $USER -p $PASSWORD -j $JSON
 
 Do not forget to update the json file at least for start and end dates.
 
