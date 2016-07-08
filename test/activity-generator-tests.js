@@ -10,10 +10,10 @@ describe('>>>> Whole tests', function() {
 
         var connection = new LinagoraConnection('avigier', 'sabine2014');
         // To generate a file
-        connection.getPage('05', '2016', 'test/resources/may.html').should.not.throw();
+        connection.getTimePage('05', '2016', 'test/resources/may.html').should.not.throw();
 
         // To get the content directly as a return
-        connection.getPage('04', '2016').then(function(data) {
+        connection.getTimePage('04', '2016').then(function(data) {
             console.log(data.htmlContent);
             done();
         }).should.not.throw();
