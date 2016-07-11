@@ -72,11 +72,11 @@ function LinagoraConnection(user, password) {
      * The page is stored in a file with given file name.
      * @param month
      * @param year
-     * @param filename writes to the filename the content if provided.
      * @param pageAppUrl the application url to fetch.
+     * @param filename writes to the filename the content if provided.
      * @return a Promise
      */
-    this.getPage = function (month, year, filename, pageAppUrl) {
+    this.getBasicPage = function (month, year, pageAppUrl, filename) {
         var self = this;
 
         log.info('connection', 'We run the request with year %j and month %j', year, month );
@@ -118,6 +118,24 @@ function LinagoraConnection(user, password) {
 }
 
 /**
+ * Gets the page of the time managementi or planning for the given month and year.
+ * The page is stored in a file with given file name.
+ * @param month
+ * @param year
+ * @param ifTimeManagement true if to parse time management page, false for planning.
+ * @param filename writes to the filename the content if provided.
+ * @return a Promise
+ */
+LinagoraConnection.prototype.getPage = function (month, year, ifTimeManagement, filename) {
+    if (filename === undefined) filename = null;
+    if (ifTimeManagement) {
+        return this.getTimePage(month, year, filename);
+    } else {
+        return this.getPlanningPage(month, year, filename);
+    }
+}
+
+/**
  * Gets the page of the time management for the given month and year.
  * The page is stored in a file with given file name.
  * @param month
@@ -126,7 +144,7 @@ function LinagoraConnection(user, password) {
  * @return a Promise
  */
 LinagoraConnection.prototype.getTimePage = function (month, year, filename) {
-    return this.getPage(month, year, filename, APPLI_TIME_URL);
+    return this.getBasicPage(month, year, APPLI_TIME_URL, filename);
 }
 
 /**
@@ -138,7 +156,8 @@ LinagoraConnection.prototype.getTimePage = function (month, year, filename) {
  * @return a Promise
  */
 LinagoraConnection.prototype.getPlanningPage = function (month, year, filename) {
-    return this.getPage(month, year, filename, APPLI_PLANNING_URL);
+    return this.getBasicPage(month, year, APPLI_PLANNING_URL, filename);
 }
+
 
 module.exports = LinagoraConnection;

@@ -2,10 +2,6 @@ var log = require('./logbridge');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 
-// The html parser
-var TimeManagementParser = require('./timemanagementparser');
-var parser = new TimeManagementParser();
-
 // The declaration filler
 var DeclarationFiller = require('./declarationfiller.js');
 var filler = new DeclarationFiller();
@@ -13,10 +9,6 @@ var filler = new DeclarationFiller();
 // To get a template
 var TemplateProvider = require('./templateprovider.js');
 var provider= new TemplateProvider();
-
-// The http connection to linagora time management application
-var LinagoraConnection = require('./linagoraconnection');
-
 
 var moment = require('moment');
 
@@ -141,37 +133,6 @@ function ActivityGenerator() {
         return result;
     }
 
-    /*
-     * Converts the month array to an object containing keys with DDMMYYYY and a structure with am and pm properties.
-     * @param object
-     * @param format
-     * @param month
-    */
-    this.convertToObject = function(object, format, month) {
-        if (month == null) return;
-        month.map(function(value, key) {
-            var day = ((key / 2 >> 0) + 1);
-            if (day < 10) {
-                day = '0' + day;
-            }
-            var keyString = day + format;
-            var valueObj = object[keyString];
-
-            // The first time we are storing value, so it is "am" value
-            if (valueObj === undefined) {
-                valueObj = {};
-                valueObj.am = value;
-                object[keyString] = valueObj;
-            }
-            // The second time, this is "pm" value
-            else {
-                valueObj.pm = value;
-            }
-
-            log.verbose('generator', '%j %j %j %j %j', key ,value, day, format, (key / 2 >> 0));
-        });
-    }
-
     /**
      * Check moment dates validity.
      */
@@ -189,7 +150,6 @@ function ActivityGenerator() {
             log.verbose('generator', 'End date computed %j', this.date2.format());
         }
     }
-
 }
 
 
@@ -216,48 +176,22 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
         }
     });
 
-    var connection = new LinagoraConnection(user, password);
-
-    var months = {};
-
-    var promises = [];
     // We load the template to use
     provider.getFromOdt(jsonObj.odtTemplate).then(function(templateData) {
+
         var date3 = moment(self.date1);
         date3.date(1);
         log.verbose('generator', date3.format());
 
-        // We get the cookie
-        connection.getCookie().then(function() {
+        var PageExtractor = require('./pageextractor');
+        var extractor = new PageExtractor();
 
-            // We build an array of promises
-            while (date3.isBefore(self.date2)) {
-                try {
-                    promises.push(
-                        // We fetch the corresponding pages
-                        connection.getTimePage(date3.month() + 1, date3.year()).then(function(data) {
-                            // We now know the worked days for this specific project and month
-                            // Note: we cannot use date3 as far as it is changing during the loop and we are async.
-                            // So most of the time it was the laste date and we lost all the previous dates.
-                            var datePromise = moment();
-                            datePromise.month(data.month - 1);
-                            datePromise.year(data.year);
-                            var datePromiseFormat = datePromise.format('MMYYYY');
-                            log.info('generator', 'Parsing month %j', datePromiseFormat);
-                            self.convertToObject(months, datePromiseFormat, parser.parse(data.htmlContent, jsonObj.activityProject));
-                        })
-                    );
-                } catch (e) { log.error('generator', e); }
-                date3.add(1, 'months');
-            }
+        var TimeManagementParser = require('./timemanagementparser');
+        var parser = new TimeManagementParser(jsonObj.activityProject);
 
-            // We wait for all promises to terminate
-            Promise.all(promises).then(function() {
-                // We can now generate files
-                log.verbose('generator', months);
-                log.verbose('generator', 'we finished all promises');
-                self.generateDeclarations(months, jsonObj, templateData);
-            });
+        // We extract date from time management
+        extractor.extract(user, password, date3, self.date2, true, parser).then(function(months) {
+            self.generateDeclarations(months, jsonObj, templateData);
         });
 
     });

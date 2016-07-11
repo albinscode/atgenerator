@@ -1,18 +1,20 @@
 var log = require('./logbridge');
 var cheerio = require('cheerio');
-
-function PlanningParser() {
-
+/**
+ * @param worker the name of the worker to extract work days as appearing in the planning.
+ * @param projectCode project code associated to the worker.
+ */
+function PlanningParser(worker, projectCode) {
+    this.worker = worker;
+    this.projectCode = projectCode;
 }
 
 /**
  * @param data the html data to parse.
- * @param worker the name of the worker to extract work days as appearing in the planning.
- * @param projectCode project code associated to the worker.
  * @return null if no day worked,
  * or an array of boolean corresponding to the days of the month. True if worked, False otherwise.
  */
-PlanningParser.prototype.parse = function(data, worker, projectCode) {
+PlanningParser.prototype.parse = function(data) {
 
     result = null;
     $ = cheerio.load(data);
@@ -20,14 +22,14 @@ PlanningParser.prototype.parse = function(data, worker, projectCode) {
     // Getting the line corresponding to the worker then go upper one level to access the whole tds containing associated projects.
     var line = $('tr td').filter(
             function(index) {
-                return $(this).text() === worker;
+                return $(this).text() === this.worker;
             }
             ).parent();
     if (line.html() === null) {
-        log.info('planning parser', 'There is NO data for this month related to worker %j and project code %j', worker, projectCode);
+        log.info('planning parser', 'There is NO data for this month related to worker %j and project code %j', this.worker, this.projectCode);
         return;
     }
-    log.info('planning parser', 'There are data for this month related to worker %j and project code %j', worker, projectCode);
+    log.info('planning parser', 'There are data for this month related to worker %j and project code %j', this.worker, this.projectCode);
     result = [];
     var index = 0;
     line.find('td').each( function(i, elem) {
@@ -49,9 +51,9 @@ PlanningParser.prototype.parse = function(data, worker, projectCode) {
                 if (projectLabel == null) {
                     projectLabel = 'Not a working day';
                 }
-                var ifFits = projectLabel.indexOf(projectCode) == 0;
+                var ifFits = projectLabel.indexOf(this.projectCode) == 0;
                 if (ifFits) {
-                    log.verbose("%j fits the project code %j", projectLabel, projectCode);
+                    log.verbose("%j fits the project code %j", projectLabel, this.projectCode);
                 }
 
                 // Half a day case
