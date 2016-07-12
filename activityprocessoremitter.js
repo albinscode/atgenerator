@@ -1,0 +1,87 @@
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
+var log = require('./logbridge.js');
+var moment = require('moment');
+function ActivityProcessorEmitter(initialActivityTotal) {
+
+    if (initialActivityTotal === undefined) initialActivityTotal = 0;
+    this.activityTotal = initialActivityTotal;
+
+}
+
+util.inherits(ActivityProcessorEmitter, EventEmitter);
+
+ActivityProcessorEmitter.EVENT_NO_DATA = 'nodata';
+ActivityProcessorEmitter.EVENT_FIRST_DAY_OF_WEEK = 'firstdayofweek';
+ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK = 'lastdayofweek';
+ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK_NO_ACTIVITY = 'lastdayofweeknoactivity';
+ActivityProcessorEmitter.EVENT_MORNING_DAY = 'morning';
+ActivityProcessorEmitter.EVENT_AFTERNOON_DAY = 'afternoon';
+
+
+/**
+ * @param date1 moment the starting date for processing.
+ * @param date2 moment the ending date for processing.
+ * @param object months an object that contains all days with morning and afternoon value.
+ */
+ActivityProcessorEmitter.prototype.process = function(months, date1, date2) {
+    try {
+        log.verbose('processor', "Processing activities");
+        var days = {};
+        var firstDateOfWeek = null;
+        var weekTotal = 0;
+        date2.add(1, 'days');
+        while (date1.isBefore(date2)) {
+            var storedValue = months[date1.format('DDMMYYYY')];
+            log.verbose('processor', 'Processing ' + date1.format('DDMMYYYY'));
+            if (storedValue === undefined) {
+                log.verbose('processor', 'Nothing to perform on this date');
+                storedValue = {};
+                storedValue.am = false;
+                storedValue.pm = false;
+                this.emit(ActivityProcessorEmitter.EVENT_NO_DATA);
+            }
+            var numberOfDay = date1.day();
+            // We start a new week
+            if (numberOfDay == 1) {
+                firstDateOfWeek = moment(date1);
+                days = {};
+                weekTotal = parseFloat(this.activityTotal);
+                this.emit(ActivityProcessorEmitter.EVENT_FIRST_DAY_OF_WEEK, date1);
+            }
+            // Number of days consumed
+            if (storedValue.am) {
+                this.activityTotal = parseFloat(this.activityTotal) + 0.5;
+            }
+            if (storedValue.pm) {
+                this.activityTotal = parseFloat(this.activityTotal) + 0.5;
+            }
+            log.verbose('processor', this.activityTotal);
+
+            // Processing morning and afternoon
+            this.emit(ActivityProcessorEmitter.EVENT_MORNING_DAY, storedValue.am, date1, numberOfDay);
+            this.emit(ActivityProcessorEmitter.EVENT_AFTERNOON_DAY, storedValue.pm, date1, numberOfDay);
+
+            // End of a working week
+            if (date1.day() == 5) {
+                // See if we have to generate the doc
+                if ((parseFloat(this.activityTotal) - weekTotal) > 0) {
+                    log.verbose('processor', 'End of week there is some activity.');
+                    this.emit(ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK, this.activityTotal - weekTotal, date1);
+                } else {
+                    log.verbose('processor', 'No activity this week');
+                    this.emit(ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK_NO_ACTIVITY, this.activityTotal - weekTotal, date1);
+                }
+                // next week
+                date1.add(2, 'days');
+            }
+            date1.add(1, 'days');
+        }
+    }
+    catch (e) {
+        log.error(e);
+    }
+}
+
+
+module.exports = ActivityProcessorEmitter;

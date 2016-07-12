@@ -6,6 +6,9 @@ var mkdirp = require('mkdirp');
 var DeclarationFiller = require('./declarationfiller.js');
 var filler = new DeclarationFiller();
 
+// To intercept on month activity data
+var ActivityProcessorEmitter = require('./activityprocessoremitter');
+
 // To get a template
 var TemplateProvider = require('./templateprovider.js');
 var provider= new TemplateProvider();
@@ -34,67 +37,56 @@ function ActivityGenerator() {
             }
             var firstDateOfWeek = date3;
             var weekTotal = 0;
-            while (date3.isBefore(self.date2)) {
-                var storedValue = months[date3.format('DDMMYYYY')];
-                log.verbose('generator', 'Managing ' + date3.format('DDMMYYYY'));
-                if (storedValue === undefined) {
-                    log.verbose('generator', 'Nothing to perform on this date');
-                    storedValue = {};
-                    storedValue.am = false;
-                    storedValue.pm = false;
-                }
-                var numberOfDays = date3.day();
-                // We start a new week (so a new file
-                if (numberOfDays == 1) {
-                    firstDateOfWeek = moment(date3);
-                    log.verbose('generator', 'Initializing doc');
-                    days = {};
-                    weekTotal = parseFloat(jsonObj.activityTotal);
-                }
-                // Number of days consumed
-                if (storedValue.am) {
-                    jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + 0.5;
-                }
-                if (storedValue.pm) {
-                    jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + 0.5;
-                }
-                log.verbose('generator', jsonObj.activityTotal);
 
-                var struct = {};
-                struct['day' + numberOfDays] = date3.format('DD');
-                // TODO for testing purpose
-                struct['AM' + numberOfDays] = this.formatCell(storedValue.am, 'AM');
-                struct['PM' + numberOfDays] = this.formatCell(storedValue.pm, 'PM');
-                //days.push(struct);
-                days['day' + numberOfDays] = struct;
-                if (date3.day() == 5) {
-                    // See if we have to generate the doc
-                    if ((parseFloat(jsonObj.activityTotal) - weekTotal) > 0) {
-                        log.verbose('generator', "update the doc");
+            var processor = new ActivityProcessorEmitter(jsonObj.activityTotal);
+            var struct = null;
+            var firstDayOfWeek = null;
 
-                        jsonObj.days = days;
+            // each start of week
+            processor.on(ActivityProcessorEmitter.EVENT_FIRST_DAY_OF_WEEK, function(date) {
+                // We reset the days structure
+                days = {};
+                firstDayOfWeek = date;
+            });
 
-                        jsonObj = this.updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
-                        log.verbose('generator', jsonObj);
-                        var newTemplateContent = filler.fill(jsonObj, templateData.content);
-                        var newTemplateFooter = filler.fill(jsonObj, templateData.footer);
+            // each morning
+            processor.on(ActivityProcessorEmitter.EVENT_MORNING_DAY, function(value, date, numberOfDay) {
+                struct = {};
+                struct['day' + numberOfDay] = date.format('DD');
+                struct['AM' + numberOfDay] = self.formatCell(value, 'AM');
+            });
 
-                        // Replaces the date of weeks
-                        var replaceall = require('replaceall');
-                        var filenamePattern = jsonObj.filenamePattern;
-                        filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
-                        filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
+            // each afternoon
+            processor.on(ActivityProcessorEmitter.EVENT_MORNING_DAY, function(value, date, numberOfDay) {
+                struct['PM' + numberOfDay] = self.formatCell(value, 'PM');
+                days['day' + numberOfDay] = struct;
+            });
 
-                        log.info('generator', 'Writing file %j', filenamePattern);
-                        provider.update(jsonObj.odtTemplate, jsonObj.filepath + '/' + filenamePattern, newTemplateContent, newTemplateFooter);
-                    } else {
-                        log.verbose('generator', 'No activity this week, week ignored');
-                    }
-                    // next week
-                    date3.add(2, 'days');
-                }
-                date3.add(1, 'days');
-            }
+            // each end of week with data
+            processor.on(ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK, function(weekTotal, date) {
+                log.verbose('generator', "update the doc");
+
+                jsonObj.days = days;
+
+                jsonObj.activityTotal = parseFloat(jsonObj.activityTotal) + parseFloat(weekTotal);
+
+                jsonObj = self.updateSpecificFields(firstDateOfWeek, jsonObj, originalJsonObj);
+                log.verbose('generator', jsonObj);
+                var newTemplateContent = filler.fill(jsonObj, templateData.content);
+                var newTemplateFooter = filler.fill(jsonObj, templateData.footer);
+
+                // Replaces the date of weeks
+                var replaceall = require('replaceall');
+                var filenamePattern = jsonObj.filenamePattern;11
+                filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
+                filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
+
+                log.info('generator', 'Writing file %j', filenamePattern);
+                provider.update(jsonObj.odtTemplate, jsonObj.filepath + '/' + filenamePattern, newTemplateContent, newTemplateFooter);
+            });
+
+            // We can now process the data
+            processor.process(months, moment(jsonObj.startDate), moment(jsonObj.endDate));
         }
         catch (e) {
             log.error(e);
