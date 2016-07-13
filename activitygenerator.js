@@ -6,6 +6,10 @@ var mkdirp = require('mkdirp');
 var DeclarationFiller = require('./declarationfiller.js');
 var filler = new DeclarationFiller();
 
+var PageExtractor = require('./pageextractor');
+
+var TimeManagementParser = require('./timemanagementparser');
+
 // To intercept on month activity data
 var ActivityProcessorEmitter = require('./activityprocessoremitter');
 
@@ -77,7 +81,7 @@ function ActivityGenerator() {
 
                 // Replaces the date of weeks
                 var replaceall = require('replaceall');
-                var filenamePattern = jsonObj.filenamePattern;11
+                var filenamePattern = jsonObj.filenamePattern;
                 filenamePattern = replaceall('$$firstDayOfWeek$$', firstDateOfWeek.format(jsonObj.patternDateFormat), filenamePattern);
                 filenamePattern = replaceall('$$lastDayOfWeek$$', firstDateOfWeek.add(4, 'days').format(jsonObj.patternDateFormat), filenamePattern);
 
@@ -175,10 +179,8 @@ ActivityGenerator.prototype.generate = function(jsonObj, user, password) {
         date3.date(1);
         log.verbose('generator', date3.format());
 
-        var PageExtractor = require('./pageextractor');
         var extractor = new PageExtractor();
 
-        var TimeManagementParser = require('./timemanagementparser');
         var parser = new TimeManagementParser(jsonObj.activityProject);
 
         // We extract date from time management

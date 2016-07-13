@@ -16,31 +16,38 @@ function PlanningParser(worker, projectCode) {
  */
 PlanningParser.prototype.parse = function(data) {
 
+    var self = this;
     result = null;
     $ = cheerio.load(data);
 
     // Getting the line corresponding to the worker then go upper one level to access the whole tds containing associated projects.
     var line = $('tr td').filter(
             function(index) {
-                return $(this).text() === this.worker;
+                return $(this).text().trim() == self.worker;
             }
             ).parent();
-    if (line.html() === null) {
+    if (line.html() == null) {
         log.info('planning parser', 'There is NO data for this month related to worker %j and project code %j', this.worker, this.projectCode);
         return;
     }
     log.info('planning parser', 'There are data for this month related to worker %j and project code %j', this.worker, this.projectCode);
     result = [];
     var index = 0;
-    line.find('td').each( function(i, elem) {
 
+    // Browsing TDs
+    line.find('td').each( function(i, elem) {
+        // The two first TDs are to be ignored (
+        if (i < 2) {
+            return;
+        }
         var cell = $(this).find('abbr');
 
         // There are projects associated to worker
         if (cell != null) {
+            log.verbose(cell);
             var duration =  $(this).attr('rowspan');
             if (duration == null) {
-                log.warn('There is a problem');
+                log.warn('planning parser', 'There is a problem');
             }
             // There is a duration
             else {
@@ -51,9 +58,9 @@ PlanningParser.prototype.parse = function(data) {
                 if (projectLabel == null) {
                     projectLabel = 'Not a working day';
                 }
-                var ifFits = projectLabel.indexOf(this.projectCode) == 0;
+                var ifFits = projectLabel.trim().indexOf(self.projectCode) == 0;
                 if (ifFits) {
-                    log.verbose("%j fits the project code %j", projectLabel, this.projectCode);
+                    log.verbose('planning parser', '%j fits the project code %j', projectLabel, self.projectCode);
                 }
 
                 // Half a day case

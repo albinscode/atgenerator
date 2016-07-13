@@ -2,6 +2,7 @@ var log = require('./logbridge');
 
 // The http connection to linagora time management application
 var LinagoraConnection = require('./linagoraconnection');
+var Promise = require('promise');
 
 var moment = require('moment');
 
@@ -38,7 +39,7 @@ function PageExtractor() {
                 valueObj.pm = value;
             }
 
-            log.verbose('generator', '%j %j %j %j %j', key ,value, day, format, (key / 2 >> 0));
+            log.verbose('page extractor', '%j %j %j %j %j', key ,value, day, format, (key / 2 >> 0));
         });
     }
 
@@ -72,7 +73,7 @@ PageExtractor.prototype.extract = function (user, password, date1, date2, ifTime
     if (ifTimeManagement === undefined) {
        ifTimeManagement = true;
     }
-    log.info('extractor', 'Processing between dates: %j and %j', date1.format(), date2.format());
+    log.info('page extractor', 'Processing between dates: %j and %j', date1.format(), date2.format());
 
     var months = {};
 
@@ -87,6 +88,7 @@ PageExtractor.prototype.extract = function (user, password, date1, date2, ifTime
                 promises.push(
                     // We fetch the corresponding pages
                     self.getConnection(user, password).getPage(date1.month() + 1, date1.year(), ifTimeManagement).then(function(data) {
+
                         // We now know the worked days for this specific project and month
                         // Note: we cannot use date1 as far as it is changing during the loop and we are async.
                         // So most of the time it was the laste date and we lost all the previous dates.
@@ -94,19 +96,20 @@ PageExtractor.prototype.extract = function (user, password, date1, date2, ifTime
                         datePromise.month(data.month - 1);
                         datePromise.year(data.year);
                         var datePromiseFormat = datePromise.format('MMYYYY');
-                        log.info('extractor', 'Parsing month %j', datePromiseFormat);
+                        log.info('page extractor', 'Parsing month %j', datePromiseFormat);
                         self.convertToObject(months, datePromiseFormat, parser.parse(data.htmlContent));
                     })
                 );
-            } catch (e) { log.error('extractor', e); }
+            } catch (e) { log.error('page extractor', e); }
             date1.add(1, 'months');
+            log.verbose('page extractor', 'another iteration on another month');
         }
 
         // We wait for all promises to terminate
         return Promise.all(promises).then(function() {
             // We can now generate files
-            log.verbose('extractor', months);
-            log.verbose('extractor', 'we finished all promises');
+            log.verbose('page extractor', months);
+            log.verbose('page extractor', 'we finished all promises');
             return new Promise(function (resolve, reject) {
                 resolve(months);
             });

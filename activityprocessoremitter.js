@@ -15,9 +15,18 @@ ActivityProcessorEmitter.EVENT_NO_DATA = 'nodata';
 ActivityProcessorEmitter.EVENT_FIRST_DAY_OF_WEEK = 'firstdayofweek';
 ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK = 'lastdayofweek';
 ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK_NO_ACTIVITY = 'lastdayofweeknoactivity';
+
 ActivityProcessorEmitter.EVENT_MORNING_DAY = 'morning';
 ActivityProcessorEmitter.EVENT_AFTERNOON_DAY = 'afternoon';
 
+ActivityProcessorEmitter.EVENT_FULL_DAY = 'fullday';
+ActivityProcessorEmitter.EVENT_HALF_DAY = 'halfday';
+ActivityProcessorEmitter.EVENT_ZERO_DAY = 'zeroday';
+
+ActivityProcessorEmitter.EVENT_ONE_DAY = 'oneday';
+
+ActivityProcessorEmitter.EVENT_SATURDAY = 'saturday';
+ActivityProcessorEmitter.EVENT_SUNDAY = 'sunday';
 
 /**
  * @param date1 moment the starting date for processing.
@@ -62,6 +71,24 @@ ActivityProcessorEmitter.prototype.process = function(months, date1, date2) {
             this.emit(ActivityProcessorEmitter.EVENT_MORNING_DAY, storedValue.am, date1, numberOfDay);
             this.emit(ActivityProcessorEmitter.EVENT_AFTERNOON_DAY, storedValue.pm, date1, numberOfDay);
 
+            // Processing one day
+            this.emit(ActivityProcessorEmitter.EVENT_ONE_DAY, date1);
+
+            // Convenient events thrown when an amount of work is done (full, half or none).
+            if (storedValue.am) {
+                if (storedValue.pm) {
+                    this.emit(ActivityProcessorEmitter.EVENT_FULL_DAY, date1, numberOfDay);
+                } else {
+                    this.emit(ActivityProcessorEmitter.EVENT_HALF_DAY, date1, numberOfDay);
+                }
+            } else {
+                if (storedValue.pm) {
+                    this.emit(ActivityProcessorEmitter.EVENT_HALF_DAY, date1, numberOfDay);
+                } else {
+                    this.emit(ActivityProcessorEmitter.EVENT_ZERO_DAY, date1, numberOfDay);
+                }
+            }
+
             // End of a working week
             if (date1.day() == 5) {
                 // See if we have to generate the doc
@@ -72,8 +99,16 @@ ActivityProcessorEmitter.prototype.process = function(months, date1, date2) {
                     log.verbose('processor', 'No activity this week');
                     this.emit(ActivityProcessorEmitter.EVENT_LAST_DAY_OF_WEEK_NO_ACTIVITY, this.activityTotal - weekTotal, date1);
                 }
-                // next week
-                date1.add(2, 'days');
+
+                // Saturday event
+                date1.add(1, 'days');
+                this.emit(ActivityProcessorEmitter.EVENT_SATURDAY, date1);
+                this.emit(ActivityProcessorEmitter.EVENT_ONE_DAY, date1);
+
+                // Sunday event
+                date1.add(1, 'days');
+                this.emit(ActivityProcessorEmitter.EVENT_SUNDAY, date1);
+                this.emit(ActivityProcessorEmitter.EVENT_ONE_DAY, date1);
             }
             date1.add(1, 'days');
         }

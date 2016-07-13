@@ -13,9 +13,9 @@ if (program.password === undefined) throw new Error("You must specify a password
 if (program.json === undefined) throw new Error("You must specify a json file");
 
 var fs = require('fs');
-var ActivityGenerator = require('./activitygenerator');
+var PlanningGenerator = require('./planninggenerator');
 
-var generator = new DiffGenerator();
+var generator = new PlanningGenerator();
 
 fs.readFile(program.json, function(err, content) {
     generator.generate(JSON.parse(content), program.user, program.password);

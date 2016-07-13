@@ -1,5 +1,13 @@
 {
-    "startDate": "201604",
+    "startDate": "20160601",
+    "endDate": "20160731",
     "worker": "VIGIER",
+    "activityProject": "13977-02",
 
+    "csvSeparator": ",",
+    "patternDateFormat": "DD/MM/YYYY",
+
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "filenamePattern": "$$activityProject$$_$$worker$$_$$startDate$$_$$endDate$$.csv",
+    "filepath": "output/avi"
 }
