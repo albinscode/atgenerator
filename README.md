@@ -2,13 +2,13 @@
 RUNNING
 =======
 
+Update the scripts/common.sh file to fit your environment.
+
 Generating an activity report
 -----------------------------
 
 See scripts/run_report:
 
-    USER=myuser
-    PASSWORD=mypassword
     JSON='../test/resources/report-example.json'
     nodejs ../commands/activity.js report -u $USER -p $PASSWORD -j $JSON
 
@@ -17,8 +17,6 @@ Generating a planning
 
 See scripts/run_planning:
 
-    USER=myuser
-    PASSWORD=mypassword
     JSON='../test/resources/planning-example.json'
     nodejs ../commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
 
