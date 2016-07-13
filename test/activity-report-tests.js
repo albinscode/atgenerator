@@ -2,15 +2,17 @@ var fs = require('fs');
 
 require('should');
 require('mocha');
+var ConfigurationTests = require('./configuration-tests');
 
-describe('>>>> Whole tests', function() {
+describe('>>>> Whole report tests', function() {
     this.timeout(10000);
-    it('should connect', function (done) {
-        var LinagoraConnection = require('../linagoraconnection');
+    it('should connect report', function (done) {
+        var LinagoraConnection = require('../lib/LinagoraConnection');
 
-        var connection = new LinagoraConnection('avigier', 'sabine2014');
-        // To generate a file
-        connection.getTimePage('05', '2016', 'test/resources/may.html').should.not.throw();
+        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+
+        // To generate the initial file with avigier account
+        // connection.getTimePage('05', '2016', 'test/resources/may.html').should.not.throw();
 
         // To get the content directly as a return
         connection.getTimePage('04', '2016').then(function(data) {
@@ -18,13 +20,13 @@ describe('>>>> Whole tests', function() {
             done();
         }).should.not.throw();
     });
-    it('should parse', function(done) {
-        var TimeManagementParser = require('../timemanagementparser');
+    it('should parse report', function(done) {
+        var TimeManagementParser = require('../lib/TimeManagementParser');
 
-        var parser = new TimeManagementParser();
-        fs.readFile('test/resources/may.html', function (err, data) {
+        var parser = new TimeManagementParser('13977-02');
+        fs.readFile('test/resources/report-may.html', function (err, data) {
             if (err) throw err;
-            var daysWorked = parser.parse(data, '13977-02');
+            var daysWorked = parser.parse(data);
             if (daysWorked != null) {
                 for (var i = 0; i < daysWorked.length; i++) {
                     console.log(daysWorked[i]);
@@ -33,11 +35,11 @@ describe('>>>> Whole tests', function() {
             done();
         });
     });
-    it('should fill', function(done) {
+    it('should fill report', function(done) {
 
-        var DeclarationFiller = require('../declarationfiller.js');
+        var DeclarationFiller = require('../lib/DeclarationFiller.js');
 
-        fs.readFile('test/resources/bl-example.json', function (err, data) {
+        fs.readFile('test/resources/report-example.json', function (err, data) {
             if (err) throw err;
             var filler = new DeclarationFiller();
 
@@ -46,9 +48,9 @@ describe('>>>> Whole tests', function() {
             done();
         });
     });
-    it('Should load template', function(done) {
+    it('Should load template report', function(done) {
 
-        var TemplateProvider = require('../templateprovider.js');
+        var TemplateProvider = require('../lib/TemplateProvider.js');
         var provider = new TemplateProvider();
 
         provider.getFromOdt('test/resources/test.odt').then(function(data) {
@@ -57,9 +59,9 @@ describe('>>>> Whole tests', function() {
             done();
         });
     });
-    it('Should update template', function(done) {
+    it('Should update template report', function(done) {
 
-        var TemplateProvider = require('../templateprovider.js');
+        var TemplateProvider = require('../lib/TemplateProvider.js');
         var provider = new TemplateProvider();
 
         provider.update('test/resources/test.odt', 'test/resources/test2.odt', 'mon nouveau content').then(function() {
@@ -68,7 +70,7 @@ describe('>>>> Whole tests', function() {
     });
     it('Should check the dates', function(done) {
 
-        var ActivityGenerator = require('../activitygenerator.js');
+        var ActivityGenerator = require('../lib/ActivityGenerator.js');
         var generator = new ActivityGenerator();
         var moment = require('moment');
         function checkDates(date1, date2) {

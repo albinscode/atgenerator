@@ -9,5 +9,5 @@
 
     "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
     "filenamePattern": "$$activityProject$$_$$worker$$_$$startDate$$_$$endDate$$.csv",
-    "filepath": "output/avi"
+    "filepath": "../output/avi"
 }

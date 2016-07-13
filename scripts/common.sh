@@ -1,0 +1,2 @@
+USER=changeme
+PASSWORD=changeme

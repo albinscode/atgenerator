@@ -2,9 +2,10 @@ var fs = require('fs');
 
 require('should');
 require('mocha');
+var ConfigurationTests = require('./configuration-tests');
 
 function parsePlanning(month, expected, done) {
-    var PlanningParser = require('../planningparser');
+    var PlanningParser = require('../lib/PlanningParser');
 
     var parser = new PlanningParser('VIGIER', '13977-02');
     fs.readFile('test/resources/planning-' + month + '.html', function (err, data) {
@@ -37,20 +38,30 @@ function parsePlanning(month, expected, done) {
 
 describe('>>>> Planning parser tests', function() {
     this.timeout(10000);
-    it('should connect planning', function (done) {
-        var LinagoraConnection = require('../linagoraconnection');
+    it('should create planning files', function(done) {
+        var LinagoraConnection = require('../lib/LinagoraConnection');
 
-        var connection = new LinagoraConnection('avigier', 'sabine2014');
-        // To generate a file
+        // By default, we generate them once with account avigier
+        done();
+        return;
+        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+        // To generate the inital files
         connection.getPlanningPage('07', '2016', 'test/resources/planning-july.html').then(function() {
             // To generate a file
             connection.getPlanningPage('06', '2016', 'test/resources/planning-june.html').then(function() {
-                // To get the content directly as a return
-                connection.getPlanningPage('07', '2016').then(function(data) {
-                    //console.log(data.htmlContent);
-                    done();
-                });
+                //console.log(data.htmlContent);
+                done();
             });
+        });
+    });
+    it('should connect planning', function(done) {
+        var LinagoraConnection = require('../lib/LinagoraConnection');
+
+        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+        // To get the content directly as a return
+        connection.getPlanningPage('07', '2016').then(function(data) {
+            //console.log(data.htmlContent);
+            done();
         });
     });
     it('should parse planning july', function(done) {

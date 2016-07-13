@@ -1,6 +1,6 @@
 require('should');
 require('mocha');
-var log = require('../logbridge.js');
+var log = require('../lib/LogBridge.js');
 
 describe('>>>> Activity processor emitter tests', function() {
     this.timeout(10000);
@@ -14,7 +14,7 @@ describe('>>>> Activity processor emitter tests', function() {
 
         }
 
-        var Processor = require('../activityprocessoremitter.js');
+        var Processor = require('../lib/ActivityProcessor.js');
 
         var processor = new Processor();
 

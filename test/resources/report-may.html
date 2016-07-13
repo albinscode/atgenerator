@@ -4,13 +4,13 @@
   <meta http-equiv="X-UA-Compatible" content="chrome=1" />
   <title>OBM - Gestion du temps</title>
   <link rel="stylesheet" type="text/css" href="/images/themes/default/styles/topbar.css" />
-  <link rel="stylesheet" type="text/css" href="/images/themes/default/styles/print.css?version=3.1.6-rc5" media="print" />
+  <link rel="stylesheet" type="text/css" href="/images/themes/default/styles/print.css?version=3.2.0-rc1" media="print" />
   <link rel="stylesheet" type="text/css" href="/images/js/introjs/introjs.css" />
   
-  <script type="text/javascript" src="/images/js/q.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/mootools/mootools-1.2.1-core.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/mootools/plugins/mootools-1.2-more.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/mootools/plugins/clientcide.js?version=3.1.6-rc5" ></script>
+  <script type="text/javascript" src="/images/js/q.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/mootools/mootools-1.2.1-core.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/mootools/plugins/mootools-1.2-more.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/mootools/plugins/clientcide.js?version=3.2.0-rc1" ></script>
   <script type="text/javascript" src="/images/js/css3-mediaqueries.js" ></script>
   <script type="text/javascript" src="/images/js/introjs/intro.js" ></script>
   <script type="text/javascript">
@@ -23,6 +23,7 @@
   obm.vars.regexp = new Object();
   obm.vars.consts = new Object();
   obm.vars.conf = new Object();
+  obm.vars.rc = new Object();
   obm.initialize = new Chain();
   obm.resize = new Chain();
   obm.vars.newTopbar = true;
@@ -68,14 +69,15 @@
   obm.vars.labels.intro.done = 'Terminer';
   obm.vars.labels.intro.next = 'Suivant';
   obm.vars.labels.intro.previous = 'Précédent';
+  obm.vars.rc.secureToken = 'OBMWithRoundcubeIsGreat';
   
   // ]]>
   </script> 
-  <script type="text/javascript" src="/images/js/datepicker.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/utils.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/obm.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/autocomplete.js?version=3.1.6-rc5" ></script>
-  <script type="text/javascript" src="/images/js/dropdown.js?version=3.1.6-rc5" ></script>
+  <script type="text/javascript" src="/images/js/datepicker.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/utils.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/obm.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/autocomplete.js?version=3.2.0-rc1" ></script>
+  <script type="text/javascript" src="/images/js/dropdown.js?version=3.2.0-rc1" ></script>
   
 
   <script type="text/javascript">
@@ -430,7 +432,7 @@ function select_default(sel_list, def_value) {
 
         new Request({
           method: 'get',
-          url: '/webmail/obm.php?_task=logout',
+          url: '/webmail/obm.php?_task=logout&_token=' + obm.vars.rc.secureToken,
           onComplete: function() { window.location.href = $('logout').href; }
         }).send();
       });
@@ -452,8 +454,8 @@ function select_default(sel_list, def_value) {
     <ul id="section">
 
 
-        <li><a href="../webmail/webmail_index.php?_task=mail&amp;_filter=ALL" class="toplink"><span id="intro-webmail"
->Mail</span></a> <a href="../webmail/webmail_index.php?_task=mail&amp;_filter=UNSEEN&amp;_mbox=INBOX"> <span id="bannerUnreadMail" class="notification_popup"></span></a></li>
+        <li><a href="../webmail/webmail_index.php?_task=mail" class="toplink"><span id="intro-webmail"
+>Mail</span></a> <a href="../webmail/webmail_index.php?_task=mail&amp;_filter=UNSEEN&amp;_mbox=INBOX&amp;_search=_"> <span id="bannerUnreadMail" class="notification_popup"></span></a></li>
 
 
 
@@ -465,6 +467,11 @@ function select_default(sel_list, def_value) {
 
         <li><a href="../contact/contact_index.php" class="toplink" id=""><span id="intro-contacts"
 >Contacts</span></a></li>
+
+
+
+        <li><a href="../linshare/linshare-beta_index.php" class="toplink" id=""><span 
+>Linshare beta</span></a></li>
 
 
 
@@ -721,7 +728,7 @@ function select_default(sel_list, def_value) {
     <div id="mainPanel" >  <h1 class="title">Gestion des temps - Mois </h1>
     <ul id="action"><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
               <a  href="../time/time_index.php?action=index" title="" >Semaine</a> &nbsp;</li><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
-              <a  href="../time/time_index.php?action=viewmonth&amp;date=2016-04-01" title="" >Mois</a> &nbsp;</li><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
+              <a  href="../time/time_index.php?action=viewmonth&amp;date=2016-05-01" title="" >Mois</a> &nbsp;</li><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
               <a  href="../time/time_index.php?action=stats" title="" >Statistiques</a> &nbsp;</li><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
               <a  href="../time/time_index.php?action=display" title="" >Affichage</a> &nbsp;</li><li onmouseover="this.className='hover'" onmouseout="this.className=''" >
               <a  href="../time/time_index.php?action=activity_report" title="" >Relevé d'activité</a> &nbsp;</li></ul>
@@ -729,101 +736,103 @@ function select_default(sel_list, def_value) {
          <div id="ajaxMessage"></div>
         
   <h1>
-    <a href="time_index.php?action=viewmonth&amp;date=2016-03-01"><img src="/images/themes/default/images/ico_previous.png" alt="[Previous Week]" /></a>
-     Avril 2016
-    <a href="time_index.php?action=viewmonth&amp;date=2016-05-01"><img src="/images/themes/default/images/ico_next.png" alt="[Next Week]" /></a>
+    <a href="time_index.php?action=viewmonth&amp;date=2016-04-01"><img src="/images/themes/default/images/ico_previous.png" alt="[Previous Week]" /></a>
+     Mai 2016
+    <a href="time_index.php?action=viewmonth&amp;date=2016-06-01"><img src="/images/themes/default/images/ico_next.png" alt="[Next Week]" /></a>
   </h1>
   <style>
-    .project7191 th {color:rgb(117, 152, 154);} 
-.project7191 div {background-color:rgb(117, 152, 154);}
-.project7118 th {color:rgb(166, 127, 105);} 
-.project7118 div {background-color:rgb(166, 127, 105);}
-.project7107 th {color:rgb(147, 177, 188);} 
-.project7107 div {background-color:rgb(147, 177, 188);}
-.project7086 th {color:rgb(172, 142, 129);} 
-.project7086 div {background-color:rgb(172, 142, 129);}
-.task22 th {color:rgb(130, 194, 175);} 
-.task22 div {background-color:rgb(130, 194, 175);}
+    .project7191 th {color:rgb(151, 187, 194);} 
+.project7191 div {background-color:rgb(151, 187, 194);}
+.project7118 th {color:rgb(114, 174, 152);} 
+.project7118 div {background-color:rgb(114, 174, 152);}
+.project7086 th {color:rgb(175, 128, 108);} 
+.project7086 div {background-color:rgb(175, 128, 108);}
+.task22 th {color:rgb(102, 188, 178);} 
+.task22 div {background-color:rgb(102, 188, 178);}
+.task26 th {color:rgb(197, 130, 161);} 
+.task26 div {background-color:rgb(197, 130, 161);}
   </style>
   <table class="planning">
   <colgroup>
   </colgroup>
-  <colgroup class="main" span="30">
+  <colgroup class="main" span="31">
   </colgroup> 
   <colgroup class="total" span="2">
   </colgroup>    
   <body>
   <tr><th
-    colspan=\"32\"><br/>VIGIER Albin<br/>&nbsp;</th><th>21</th></tr><tr><th>&nbsp;</th><th><a href="../time/time_index.php?action=index&amp;date=2016-04-01&amp;sel_user_id=618">V</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-02&amp;sel_user_id=618">S</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-03&amp;sel_user_id=618">D</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-04&amp;sel_user_id=618">L</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-05&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-06&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-07&amp;sel_user_id=618">J</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-08&amp;sel_user_id=618">V</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-09&amp;sel_user_id=618">S</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-10&amp;sel_user_id=618">D</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-11&amp;sel_user_id=618">L</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-12&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-13&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-14&amp;sel_user_id=618">J</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-15&amp;sel_user_id=618">V</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-16&amp;sel_user_id=618">S</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-17&amp;sel_user_id=618">D</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-18&amp;sel_user_id=618">L</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-19&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-20&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-21&amp;sel_user_id=618">J</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-22&amp;sel_user_id=618">V</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-23&amp;sel_user_id=618">S</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-24&amp;sel_user_id=618">D</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-25&amp;sel_user_id=618">L</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-26&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-27&amp;sel_user_id=618">M</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-28&amp;sel_user_id=618">J</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-29&amp;sel_user_id=618">V</a></th>
-<th><a href="../time/time_index.php?action=index&amp;date=2016-04-30&amp;sel_user_id=618">S</a></th>
-<tr></tr><th>&nbsp;</th><td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">01</td>
-<td style="background-color: #A0A0A0; text-align: center">02</td>
-<td style="background-color: #A0A0A0; text-align: center">03</td>
+    colspan=\"33\"><br/>VIGIER Albin<br/>&nbsp;</th><th>22</th></tr><tr><th>&nbsp;</th><th><a href="../time/time_index.php?action=index&amp;date=2016-05-01&amp;sel_user_id=618">D</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-02&amp;sel_user_id=618">L</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-03&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-04&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-05&amp;sel_user_id=618">J</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-06&amp;sel_user_id=618">V</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-07&amp;sel_user_id=618">S</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-08&amp;sel_user_id=618">D</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-09&amp;sel_user_id=618">L</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-10&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-11&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-12&amp;sel_user_id=618">J</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-13&amp;sel_user_id=618">V</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-14&amp;sel_user_id=618">S</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-15&amp;sel_user_id=618">D</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-16&amp;sel_user_id=618">L</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-17&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-18&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-19&amp;sel_user_id=618">J</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-20&amp;sel_user_id=618">V</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-21&amp;sel_user_id=618">S</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-22&amp;sel_user_id=618">D</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-23&amp;sel_user_id=618">L</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-24&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-25&amp;sel_user_id=618">M</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-26&amp;sel_user_id=618">J</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-27&amp;sel_user_id=618">V</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-28&amp;sel_user_id=618">S</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-29&amp;sel_user_id=618">D</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-30&amp;sel_user_id=618">L</a></th>
+<th><a href="../time/time_index.php?action=index&amp;date=2016-05-31&amp;sel_user_id=618">M</a></th>
+<tr></tr><th>&nbsp;</th><td style="background-color: #A0A0A0; text-align: center">01</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">02</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">03</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">04</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">05</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">06</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">07</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">08</td>
-<td style="background-color: #A0A0A0; text-align: center">09</td>
-<td style="background-color: #A0A0A0; text-align: center">10</td>
+<td style="background-color: #A0A0A0; text-align: center">07</td>
+<td style="background-color: #A0A0A0; text-align: center">08</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">09</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">10</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">11</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">12</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">13</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">14</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">15</td>
-<td style="background-color: #A0A0A0; text-align: center">16</td>
-<td style="background-color: #A0A0A0; text-align: center">17</td>
+<td style="background-color: #A0A0A0; text-align: center">14</td>
+<td style="background-color: #A0A0A0; text-align: center">15</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">16</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">17</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">18</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">19</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">20</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">21</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">22</td>
-<td style="background-color: #A0A0A0; text-align: center">23</td>
-<td style="background-color: #A0A0A0; text-align: center">24</td>
+<td style="background-color: #A0A0A0; text-align: center">21</td>
+<td style="background-color: #A0A0A0; text-align: center">22</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">23</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">24</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">25</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">26</td>
 <td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">27</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">28</td>
-<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">29</td>
-<td style="background-color: #A0A0A0; text-align: center">30</td>
+<td style="background-color: #A0A0A0; text-align: center">28</td>
+<td style="background-color: #A0A0A0; text-align: center">29</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">30</td>
+<td style="background-color: #A0A0A0; text-align: center; color: #FFFFFF">31</td>
 </tr><tr class="project7191">
-        <th><a href="../project/project_index.php?action=detailconsult&project_id=7191" title="13977-02 - AT 60jours">13977-02</a></th><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td>
-        <th>&nbsp;</th><td>6</td></tr><tr class="project7118">
-        <th><a href="../project/project_index.php?action=detailconsult&project_id=7118" title="13982-01 - [UGAP] alfresco">13982-01</a></th><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td>
-        <th>&nbsp;</th><td>2</td></tr><tr class="project7107">
-        <th><a href="../project/project_index.php?action=detailconsult&project_id=7107" title="14090-01 - Formations RedHat">14090-01</a></th><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td>
-        <th>&nbsp;</th><td>9</td></tr><tr class="project7086">
-        <th><a href="../project/project_index.php?action=detailconsult&project_id=7086" title="20173-01 - Etude Veille Socle Bofip">20173-01</a></th><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td>
-        <th>&nbsp;</th><td>2</td></tr><tr class="task22">
-        <th><abbr title="Absences - conges">Absences - conges</abbr></th><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td>
+        <th><a href="../project/project_index.php?action=detailconsult&project_id=7191" title="13977-02 - AT 60jours">13977-02</a></th><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="50%"><div style="width:50%;">&nbsp;</div></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="50%"><div style="width:50%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td title="50%"><div style="width:50%;">&nbsp;</div></td>
+        <th>&nbsp;</th><td>12.5</td></tr><tr class="project7118">
+        <th><a href="../project/project_index.php?action=detailconsult&project_id=7118" title="13982-01 - [UGAP] alfresco">13982-01</a></th><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td>
+        <th>&nbsp;</th><td>4</td></tr><tr class="project7086">
+        <th><a href="../project/project_index.php?action=detailconsult&project_id=7086" title="20173-01 - Etude Veille Socle Bofip">20173-01</a></th><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td>
+        <th>&nbsp;</th><td>1</td></tr><tr class="task22">
+        <th><abbr title="Absences - conges">Absences - conges</abbr></th><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="50%"><div style="width:50%;">&nbsp;</div></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="50%"><div style="width:50%;">&nbsp;</div></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td title="50%"><div style="width:50%;">&nbsp;</div></td>
+        <th>&nbsp;</th><td>2.5</td></tr><tr class="task26">
+        <th><abbr title="Absences - ferie">Absences - ferie</abbr></th><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td title="100%"><div style="width:100%;">&nbsp;</div></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td style="background-color: #A0A0A0;">&nbsp;</td><td style="background-color: #A0A0A0;">&nbsp;</td><td></td><td></td>
         <th>&nbsp;</th><td>2</td></tr>
   </body>
   </table>
