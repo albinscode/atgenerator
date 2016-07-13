@@ -1,3 +1,14 @@
+PREREQUISITES
+=============
+
+Nodejs shall be installed, e.g. `sudo apt-get install nodejs` on debian systems.
+
+INSTALLATION
+============
+
+In this project root just run `npm install` to get all node dependencies (internet shall be accessible).
+
+
 
 RUNNING
 =======
