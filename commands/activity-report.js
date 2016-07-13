@@ -19,7 +19,7 @@ var ActivityGenerator = require('../lib/ActivityGenerator');
 
 var generator = new ActivityGenerator();
 
-
 fs.readFile(program.json, function(err, content) {
-    generator.generate(JSON.parse(content), program.user, program.password);
+    var connectionProperties = { user: program.user, password: program.password };
+    generator.generate(JSON.parse(content), connectionProperties);
 });

@@ -16,8 +16,9 @@ var fs = require('fs');
 var PlanningGenerator = require('../lib/PlanningGenerator');
 
 var generator = new PlanningGenerator();
-
 fs.readFile(program.json, function(err, content) {
-    generator.generate(JSON.parse(content), program.user, program.password);
+    var json = JSON.parse(content);
+    var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
+    generator.generate(json, connectionProperties);
 });
 

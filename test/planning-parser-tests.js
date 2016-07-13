@@ -44,7 +44,8 @@ describe('>>>> Planning parser tests', function() {
         // By default, we generate them once with account avigier
         done();
         return;
-        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+        ConfigurationTests.connectionProperties.groupId = '421';
+        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
         // To generate the inital files
         connection.getPlanningPage('07', '2016', 'test/resources/planning-july.html').then(function() {
             // To generate a file
@@ -57,7 +58,7 @@ describe('>>>> Planning parser tests', function() {
     it('should connect planning', function(done) {
         var LinagoraConnection = require('../lib/LinagoraConnection');
 
-        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
         // To get the content directly as a return
         connection.getPlanningPage('07', '2016').then(function(data) {
             //console.log(data.htmlContent);

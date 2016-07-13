@@ -9,10 +9,10 @@ describe('>>>> Whole report tests', function() {
     it('should connect report', function (done) {
         var LinagoraConnection = require('../lib/LinagoraConnection');
 
-        var connection = new LinagoraConnection(ConfigurationTests.USER, ConfigurationTests.PASSWORD);
+        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
 
         // To generate the initial file with avigier account
-        // connection.getTimePage('05', '2016', 'test/resources/may.html').should.not.throw();
+        // connection.getTimePage('05', '2016', 'test/resources/report-may.html').should.not.throw();
 
         // To get the content directly as a return
         connection.getTimePage('04', '2016').then(function(data) {

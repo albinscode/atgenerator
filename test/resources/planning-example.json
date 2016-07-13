@@ -4,6 +4,9 @@
     "worker": "VIGIER",
     "activityProject": "13977-02",
 
+    "_groupIdComment": "The default group is Linagora GSO, you can assign another group by searching the associated number in the OBM planning. If not specified it will use the default group id of your account profile.",
+    "groupId": "421",
+
     "csvSeparator": ",",
     "patternDateFormat": "DD/MM/YYYY",
 
