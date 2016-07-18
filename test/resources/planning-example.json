@@ -1,4 +1,5 @@
 {
+    "_startDateComment": "If no start date is provided, the current month will be used.",
     "startDate": "20160601",
     "endDate": "20160731",
     "worker": "VIGIER",
@@ -11,6 +12,7 @@
     "patternDateFormat": "DD/MM/YYYY",
 
     "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "_filenamePatternComment2": "If no pattern is specified it will be output directly on the console",
     "filenamePattern": "$$activityProject$$_$$worker$$_$$startDate$$_$$endDate$$.csv",
     "filepath": "../output/avi"
 }
