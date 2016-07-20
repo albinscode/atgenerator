@@ -12,12 +12,18 @@ describe('>>>> Connection cache tests', function() {
 
         var cachedFile = connection.getCachedFile('http://myurl.html');
         connection.writeCachedFile(cachedFile, 'my content');
-        fs.lstat('.cache/' + cachedFile, function (err) {
-            should.not.ifError(err);
+        fs.lstat(cachedFile, function (err) {
+            console.log(err);
+            try {
+                if (err != null) throw new Error('should be null!');
+                connection.manageCache(cachedFile).then(function(content) {
+                    console.log(content);
+                    done();
+                });
+            } catch (e) {
+                console.log(e);
+                should.not.fail();
+            }
         });
-        connection.manageCache(cachedFile).then(function(content) {
-           console.log(content);
-        });
-        done();
     });
 });
