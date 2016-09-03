@@ -3,6 +3,7 @@ var program = require('commander');
 var inquirer = require('inquirer');
 var fs = require('fs');
 var ActivityGenerator = require('../lib/ActivityGenerator');
+var Promise = require('promise');
 
 
 program
@@ -22,24 +23,33 @@ var question = [{
 // TODO find a better way to do this and avoid code redundancy.
 if (program.user === undefined) throw new Error("You must specify a user");
 if (program.json === undefined) throw new Error("You must specify a json file");
-if (program.password === undefined) {//throw new Error("You must specify a password");
-    inquirer.prompt(question)
-    .then(function(answer) {
+if (program.password === undefined) {
+    inquirer.prompt(question).then(function(answer) {
         if (!answer.password.trim()) {
             throw new Error("You must specify a password");
         }
 
         program.password = answer.password;
-        var generator = new ActivityGenerator();
-
-        fs.readFile(program.json, function(err, content) {
-            var connectionProperties = { user: program.user, password: program.password };
-            generator.generate(JSON.parse(content), connectionProperties);
-        });
+        performCommand();
     })
     .catch(function(reason) {
         console.log(reason);
     })
+} else {
+    performCommand();
 }
 
+function performCommand() {
 
+    return new Promise(function(resolve, reject) {
+        var generator = new ActivityGenerator();
+
+        fs.readFile(program.json, function(err, content) {
+            if (err) reject('Cannot read json file: ' + err);
+            var connectionProperties = { user: program.user, password: program.password };
+            generator.generate(JSON.parse(content), connectionProperties);
+            resolve();
+        });
+
+    });
+}
