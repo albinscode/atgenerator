@@ -1,4 +1,4 @@
 source common.sh
-JSON='../test/resources/report-example.json'
+JSON='../templates/report-bl'
 
-nodejs ../commands/activity.js report -u $USER -p $PASSWORD -j $JSON
+nodejs ../commands/activity.js report -u $USER -j $JSON

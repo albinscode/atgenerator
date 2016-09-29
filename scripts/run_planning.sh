@@ -1,4 +1,5 @@
-source common.sh
-JSON='../test/resources/planning-example.json'
-
-nodejs ../commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
+AT="/home/avigier/git/atgenerator"
+source "$AT/scripts/common.sh"
+JSON="$AT/templates/planning-full.json"
+#JSON="$AT/planning-csv.json"
+nodejs $AT/commands/activity.js planning -u $USER -p $PASSWORD -j $JSON $@
