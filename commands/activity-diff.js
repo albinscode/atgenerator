@@ -13,11 +13,14 @@ if (program.password === undefined) throw new Error("You must specify a password
 if (program.json === undefined) throw new Error("You must specify a json file");
 
 var fs = require('fs');
-var ActivityGenerator = require('./activitygenerator');
+var DiffGenerator = require('../lib/DiffGenerator');
 
 var generator = new DiffGenerator();
 
 fs.readFile(program.json, function(err, content) {
-    generator.generate(JSON.parse(content), program.user, program.password);
+    var json = JSON.parse(content);
+    var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
+
+    generator.generate(json, connectionProperties);
 });
 
