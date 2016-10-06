@@ -4,6 +4,7 @@ var moment = require('moment');
 var inquirer = require('inquirer');
 var fs = require('fs');
 var log = require('../lib/LogBridge');
+var utils = require('../lib/Utils');
 
 program
     .version('1.0.0')
@@ -13,8 +14,6 @@ program
     .option('-N --nextmonth', 'the next month to parse')
     .option('-P --previousmonth', 'the previous month to parse')
     .parse(process.argv);
-
-
 
 var questions = [];
 
@@ -45,6 +44,26 @@ buildQuestion(questions,
             message: 'Json file to use (located in you templates directory).'
         }
 );
+// The projects to use if any
+/*
+buildQuestion(questions,
+        {
+            name: 'projectCode',
+            type: 'list',
+            choices: function () {
+                var jsonObj = utils.createJsonObject('conf/conf.json').projects;
+                return Object.keys(jsonObj).map(function (key) { return key + ' - ' + jsonObj[key].description; });
+            },
+            filter: function (value) {
+                // We assign the value to the command arguments
+                program.projectCode = value;
+                console.log('coucou ' + program.projectCode);
+                return value;
+            },
+            message: 'Project code to use'
+        }
+);
+*/
 
 inquirer.prompt(questions).then(function(answers) {
 
@@ -80,11 +99,13 @@ function buildQuestion(questions, question) {
             }
         };
         // We add a filter to add the input variable to the command arguments
-        question.filter = function (value) {
-            // We assign the value to the command arguments
-            program[name] = value;
-            return value;
-        };
+        if (question.filter === undefined) {
+            question.filter = function (value) {
+                // We assign the value to the command arguments
+                program[name] = value;
+                return value;
+            };
+        }
         questions.push(question);
     }
 }
@@ -96,20 +117,14 @@ function performCommand() {
     var PlanningGenerator = require('../lib/PlanningGenerator');
 
     var generator = new PlanningGenerator();
-    fs.readFile(program.json, function(err, content) {
-        if (content === undefined) {
-            log.error('planning command', 'The json file %j is not valid', program.json);
-            return;
-        }
-        var json = JSON.parse(content);
+    var json = utils.createJsonObject(program.json);
 
-        // Setting the next month
-        if (program.nextmonth) {
-            json.startDate = moment().add(1, 'months').startOf('month');
-            json.endDate = moment().add(1, 'months').endOf('month');
-        }
-        var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
+    // Setting the next month
+    if (program.nextmonth) {
+        json.startDate = moment().add(1, 'months').startOf('month');
+        json.endDate = moment().add(1, 'months').endOf('month');
+    }
+    var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
 
-        generator.generate(json, connectionProperties);
-    });
+    generator.generate(json, connectionProperties);
 }
