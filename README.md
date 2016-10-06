@@ -71,6 +71,6 @@ To ease the use of the commands, the following bash could be created:
 
 Then the following aliases can be used for example:
 
-    alias myjob=/home/avigier/git/atgenerator/perso/run_planning.sh
-    alias myjobnext="/home/avigier/git/atgenerator/perso/run_planning.sh nextmonth"
+    alias myjob=cd /home/avigier/git/atgenerator/ && ./scripts/run_planning.sh
+    alias myjobnext="cd /home/avigier/git/atgenerator/ && ./scripts/run_planning.sh nextmonth"
 

@@ -40,7 +40,7 @@ buildQuestion(questions,
             name: 'json',
             type: 'list',
             choices: function () {
-                return fs.readdirSync('../templates').map(function (element) { return '../templates/' + element; });
+                return fs.readdirSync('templates').map(function (element) { return 'templates/' + element; });
             },
             message: 'Json file to use (located in you templates directory).'
         }
