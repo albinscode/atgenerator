@@ -1,9 +1,9 @@
 // This is the sub command to generate the planning of a worker for given period.
 var program = require('commander');
 var moment = require('moment');
-var inquirer = require('inquirer');
 var fs = require('fs');
 var log = require('../lib/LogBridge');
+var commandUtils = require('../lib/CommandUtils.js');
 var utils = require('../lib/Utils');
 
 program
@@ -11,104 +11,18 @@ program
     .option('-u --user <user>', 'user to connect to OBM service')
     .option('-p --password <password>', 'password to connect to OBM service')
     .option('-j --json <json>', 'json data to use for diff generation')
+    .option('-f --format', 'the format to use: csv or console')
     .option('-N --nextmonth', 'the next month to parse')
     .option('-P --previousmonth', 'the previous month to parse')
     .parse(process.argv);
 
-var questions = [];
-
-// The obm username
-buildQuestion(questions,
-        {
-            name: 'user',
-            type: 'input',
-            message: 'Please enter your username to connect to obm'
-        }
-);
-// the obm password
-buildQuestion(questions,
-        {
-            name: 'password',
-            type: 'password',
-            message: 'Please enter your obm password.'
-        }
-);
-// The json file to use
-buildQuestion(questions,
-        {
-            name: 'json',
-            type: 'list',
-            choices: function () {
-                return fs.readdirSync('templates').map(function (element) { return 'templates/' + element; });
-            },
-            message: 'Json file to use (located in you templates directory).'
-        }
-);
-// The projects to use if any
-/*
-buildQuestion(questions,
-        {
-            name: 'projectCode',
-            type: 'list',
-            choices: function () {
-                var jsonObj = utils.createJsonObject('conf/conf.json').projects;
-                return Object.keys(jsonObj).map(function (key) { return key + ' - ' + jsonObj[key].description; });
-            },
-            filter: function (value) {
-                // We assign the value to the command arguments
-                program.projectCode = value;
-                console.log('coucou ' + program.projectCode);
-                return value;
-            },
-            message: 'Project code to use'
-        }
-);
-*/
-
-inquirer.prompt(questions).then(function(answers) {
-
-    performCommand();
-})
-.catch(function(reason) {
-    log.error('planning command', reason);
-});
-
-/**
- * Builds the associated question for the given input variable.
- * @param questions the array of question to fill.
- * @param question the expected inquirer array that contains variables and callbacks.
- * Note: the inquirer array name value will be used for the program variable.
- * I.e. by providing an inquirer array with "name": "password", the program.password will be filled.
- */
-function buildQuestion(questions, question) {
-
-    var name = question.name;
-    if (name === undefined) {
-        log.error('planning command', 'You shall define a question with a name attribute');
-        return;
-    }
-    // It is not defined we will ask for it
-    if (program[name] === undefined) {
-        // We add a validate function
-        question.validate = function (value) {
-            // No value provided
-            if (value.trim() === '') {
-                return 'You must provide a value';
-            } else {
-                return true;
-            }
-        };
-        // We add a filter to add the input variable to the command arguments
-        if (question.filter === undefined) {
-            question.filter = function (value) {
-                // We assign the value to the command arguments
-                program[name] = value;
-                return value;
-            };
-        }
-        questions.push(question);
-    }
-}
+    commandUtils.displayPrompt(program, [ 'json2', 'redefineJson', 'activityProject' ]).then(function(answers) {
+        console.log(JSON.stringify(answers, null, '  '));
+        performCommand();
+    })
+    .catch(function(reason) {
+        log.error('planning command', reason);
+    });
 
 /**
  * Performs the planning command wether it is from interactive or non interactive mode.4
@@ -128,3 +42,4 @@ function performCommand() {
 
     generator.generate(json, connectionProperties);
 }
+
