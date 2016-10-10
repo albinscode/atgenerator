@@ -12,11 +12,11 @@ program
     .option('-p --password <password>', 'password to connect to OBM service')
     .option('-j --json <json>', 'json data to use for diff generation')
     .option('-f --format', 'the format to use: csv or console')
-    .option('-N --nextmonth', 'the next month to parse')
-    .option('-P --previousmonth', 'the previous month to parse')
+    .option('-s --startDate <startDate>', 'the starting date')
+    .option('-e --endDate <endDate>', 'the ending date')
     .parse(process.argv);
 
-    commandUtils.displayPrompt(program, [ 'json2', 'redefineJson', 'activityProject' ]).then(function(answers) {
+    commandUtils.displayPrompt(program, [ 'json2', 'redefineJson', 'activityProject', 'format' ]).then(function(answers) {
         console.log(JSON.stringify(answers, null, '  '));
         performCommand();
     })
@@ -31,13 +31,8 @@ function performCommand() {
     var PlanningGenerator = require('../lib/PlanningGenerator');
 
     var generator = new PlanningGenerator();
-    var json = utils.createJsonObject(program.json);
+    var json = utils.createJsonObject(program.json, program);
 
-    // Setting the next month
-    if (program.nextmonth) {
-        json.startDate = moment().add(1, 'months').startOf('month');
-        json.endDate = moment().add(1, 'months').endOf('month');
-    }
     var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
 
     generator.generate(json, connectionProperties);
