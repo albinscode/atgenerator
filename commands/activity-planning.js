@@ -16,7 +16,7 @@ program
     .option('-e --endDate <endDate>', 'the ending date')
     .parse(process.argv);
 
-    commandUtils.displayPrompt(program, [ 'json2', 'redefineJson', 'activityProject', 'format' ]).then(function(answers) {
+    commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ]).then(function(answers) {
         console.log(JSON.stringify(answers, null, '  '));
         performCommand();
     })
