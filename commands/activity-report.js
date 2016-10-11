@@ -4,52 +4,33 @@ var inquirer = require('inquirer');
 var fs = require('fs');
 var ActivityGenerator = require('../lib/ActivityGenerator');
 var Promise = require('promise');
-
+var log = require('../lib/LogBridge');
+var commandUtils = require('../lib/CommandUtils.js');
+var utils = require('../lib/Utils');
 
 program
     .version('1.0.0')
     .option('-u --user <user>', 'user to connect to OBM service')
     .option('-p --password <password>', 'password to connect to OBM service')
     .option('-j --json <json>', 'json data to use for report')
+    .option('-f --format', 'the format to use: csv or console')
+    .option('-s --startDate <startDate>', 'the starting date')
+    .option('-e --endDate <endDate>', 'the ending date')
+    .option('-p --activityProject <activityProject>', 'the activity code to filter')
     .parse(process.argv);
 
-var question = [{
-    type: 'password',
-    name: 'password',
-    message: 'Please enter your obm password.'
-}];
-
-// Check of parameters not taken into account by commander.
-// TODO find a better way to do this and avoid code redundancy.
-if (program.user === undefined) throw new Error("You must specify a user");
-if (program.json === undefined) throw new Error("You must specify a json file");
-if (program.password === undefined) {
-    inquirer.prompt(question).then(function(answer) {
-        if (!answer.password.trim()) {
-            throw new Error("You must specify a password");
-        }
-
-        program.password = answer.password;
+    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'activityProject' ]).then(function(answers) {
         performCommand();
     })
     .catch(function(reason) {
-        console.log(reason);
-    })
-} else {
-    performCommand();
-}
+        log.error('report command', reason);
+    });
 
 function performCommand() {
 
-    return new Promise(function(resolve, reject) {
-        var generator = new ActivityGenerator();
-
-        fs.readFile(program.json, function(err, content) {
-            if (err) reject('Cannot read json file: ' + err);
-            var connectionProperties = { user: program.user, password: program.password };
-            generator.generate(JSON.parse(content), connectionProperties);
-            resolve();
-        });
-
-    });
+    var generator = new ActivityGenerator();
+    var json = utils.createJsonObject(program.json, program);
+    log.verbose('report command', JSON.stringify(json));
+    var connectionProperties = { user: program.user, password: program.password };
+    generator.generate(json, connectionProperties);
 }

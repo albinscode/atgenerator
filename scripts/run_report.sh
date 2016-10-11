@@ -1,4 +1,5 @@
-source common.sh
-JSON='../templates/report-bl.json'
+AT="/home/avigier/git/atgenerator"
+source "$AT/scripts/common.sh"
+JSON="$AT/templates/report-bl.json"
 
-nodejs ../commands/activity.js report -u $USER -j $JSON
+nodejs $AT/commands/activity.js report -u $USER -j $JSON $@

@@ -17,7 +17,6 @@ program
     .parse(process.argv);
 
     commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ]).then(function(answers) {
-        console.log(JSON.stringify(answers, null, '  '));
         performCommand();
     })
     .catch(function(reason) {
