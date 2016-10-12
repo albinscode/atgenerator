@@ -1,3 +1,5 @@
+var utils = require('../lib/Utils');
+
 // This is the sub command to generate the diff between time management and planning
 var program = require('commander');
 program
@@ -18,7 +20,7 @@ var DiffGenerator = require('../lib/DiffGenerator');
 var generator = new DiffGenerator();
 
 fs.readFile(program.json, function(err, content) {
-    var json = JSON.parse(content);
+    var json = utils.createJsonObject(program.json, program);
     var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
 
     generator.generate(json, connectionProperties);
