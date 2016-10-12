@@ -1,5 +1,3 @@
-AT="/home/avigier/git/atgenerator"
-source "$AT/scripts/common.sh"
-JSON="$AT/templates/planning-full.json"
-#JSON="$AT/planning-csv.json"
-nodejs $AT/commands/activity.js planning $@
+source "scripts/common.sh"
+JSON="templates/planning-full.json"
+nodejs commands/activity.js planning $@
