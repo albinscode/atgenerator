@@ -14,6 +14,7 @@ program
     .option('-p --password <password>', 'password to connect to OBM service')
     .option('-j --json <json>', 'json data to use for report')
     .option('-f --format', 'the format to use: csv or console')
+    .option('-F --followup', 'to generate the followup due every 6 months')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-p --activityProject <activityProject>', 'the activity code to filter')
@@ -32,5 +33,5 @@ function performCommand() {
     var json = utils.createJsonObject(program.json, program);
     log.verbose('report command', JSON.stringify(json));
     var connectionProperties = { user: program.user, password: program.password };
-    generator.generate(json, connectionProperties);
+    generator.generate(json, connectionProperties, program.followup);
 }
