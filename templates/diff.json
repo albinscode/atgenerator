@@ -1,0 +1,13 @@
+{
+    "_startDateComment": "If no start date is provided, the current month will be used.",
+    "startDate": "",
+    "endDate": "",
+    "worker": "VIGIER",
+    "activityProject": "",
+
+    "_groupIdComment": "The default group is Linagora GSO, you can assign another group by searching the associated number in the OBM planning. If not specified it will use the default group id of your account profile.",
+    "groupId": "421",
+
+    "patternDateFormat": "DD/MM/YYYY"
+
+}
