@@ -18,7 +18,8 @@
     "replaceall": "~0.1.6",
     "request": "~2.72.0",
     "request-debug": "~0.2.0",
-    "should": "~8.4.0"
+    "should": "~8.4.0",
+    "moment-period": "git+https://github.com/albinscode/moment-period.git"
   },
   "devDependencies": {},
   "scripts": {
