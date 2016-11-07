@@ -1,6 +1,6 @@
 {
     "startDate": "20160404",
-    "endDate": "20160702",
+    "endDate": "20160930",
     "odtTemplate": "../test/resources/AT_13977-02_CRA_modele.odt",
 
     "patternDateFormat": "YYYYMMDD",
@@ -31,7 +31,7 @@
     "_companyLogoComment": "TODO",
     "companyLogo": "linagora.png",
 
-    "activityProject": "13977-02",
+    "activityProject": "14505-01",
     "activityLabel": "AT 60 jours",
     "activityDescription": "Développements modules Espace Clients",
     "activityDate": null,
