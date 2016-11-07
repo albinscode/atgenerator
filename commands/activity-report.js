@@ -20,7 +20,12 @@ program
     .option('-p --activityProject <activityProject>', 'the activity code to filter')
     .parse(process.argv);
 
-    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'activityProject' ]).then(function(answers) {
+    var features = [ 'user', 'password', 'json'];
+    // In followup mode we don't need activity project
+    if (!program.followup) {
+        features.push('activityProject');
+    }
+    commandUtils.displayPrompt(program, features).then(function(answers) {
         performCommand();
     })
     .catch(function(reason) {
@@ -31,7 +36,7 @@ function performCommand() {
 
     var generator = new ActivityGenerator();
     var json = utils.createJsonObject(program.json, program);
-    log.verbose('report command', JSON.stringify(json));
+    //log.verbose('report command', JSON.stringify(json));
     var connectionProperties = { user: program.user, password: program.password };
     generator.generate(json, connectionProperties, program.followup);
 }
