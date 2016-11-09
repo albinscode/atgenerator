@@ -7,6 +7,7 @@
     "patternHumanDateFormat": "DD/MM/YYYY",
     "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
     "filenamePattern": "$$firstDayOfWeek$$.ods",
+    "filenameFinalPattern": "followup.ods",
     "filepath": "output/avi",
 
     "companyResponsible": "G. Valentin",
