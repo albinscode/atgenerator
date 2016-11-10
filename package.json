@@ -14,12 +14,14 @@
     "mocha": "~2.5.2",
     "moment": "~2.13.0",
     "moment-period": "git+https://github.com/albinscode/moment-period.git",
+    "od-provider": "git+https://github.com/albinscode/od-provider.git",
+    "od-merger": "git+https://github.com/albinscode/od-merger.git",
     "npmlog": "^4.0.0",
     "promise": "~7.1.1",
     "replaceall": "~0.1.6",
     "request": "~2.72.0",
     "request-debug": "~0.2.0",
-    "should": "~8.4.0",
+    "should": "~8.4.0"
   },
   "devDependencies": {},
   "scripts": {
