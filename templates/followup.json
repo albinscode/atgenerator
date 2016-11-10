@@ -17,21 +17,10 @@
     "activityDate": null,
 
     "_computedFieldsComment": "Here are the computed fields",
-    "activityWeek": "16",
-    "activityMonth": "Mars",
-    "activityYear": "2016",
 
     "activityHalfDay": "3h45",
     "activityFullDay": "07h30",
     "activityMinutesPerDay": 450,
 
-    "days": [
-        {"day1": "11", "AM1": true, "PM1": true, "description": ""},
-        {"day2": "12", "AM2": true, "PM2": true, "description": ""},
-        {"day3": "13", "AM3": true, "PM2": true, "description": ""},
-        {"day4": "14", "AM4": false, "PM2": false, "description": ""},
-        {"day5": "15", "AM5": false, "PM2": false, "description": ""}
-    ]
-
-
+    "days": []
 }
