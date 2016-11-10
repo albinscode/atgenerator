@@ -50,10 +50,9 @@ describe('>>>> Whole report tests', function() {
     });
     it('Should load template report', function(done) {
 
-        var TemplateProvider = require('../lib/TemplateProvider.js');
-        var provider = new TemplateProvider();
+        var provider = require('od-provider');
 
-        provider.getFromOdt('test/resources/test.odt').then(function(data) {
+        provider.getFromFile('test/resources/test.odt').then(function(data) {
             console.log(data.content);
             console.log(data.footer);
             done();
@@ -61,8 +60,7 @@ describe('>>>> Whole report tests', function() {
     });
     it('Should update template report', function(done) {
 
-        var TemplateProvider = require('../lib/TemplateProvider.js');
-        var provider = new TemplateProvider();
+        var provider = require('od-provider');
 
         provider.update('test/resources/test.odt', 'test/resources/test2.odt', 'mon nouveau content').then(function() {
             done();
