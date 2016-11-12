@@ -16,26 +16,58 @@ RUNNING
 
 Update the scripts/common.sh file to fit your environment.
 
+
+Generic usage
+-------------
+
+Each time an argument won't be supplied in the command line it will be interactively asked for input.
+
+Generating a followup report
+-----------------------------
+
+This report allows you to generate an ods file with your whole activity set by week and specifying duration in hours for each day.
+
+See scripts/run_followup:
+
+    JSON='templates/followup.json'
+    nodejs commands/activity.js report -u $USER -p $PASSWORD -j $JSON -F
+
+Generating a diff to check your activity
+----------------------------------------
+
+To avoid gaps between planning and time management this features will allow you to generate a diff between these two input modes.
+
+See scripts/run_followup:
+
+    JSON='templates/diff.json'
+    nodejs commands/activity.js diff -u $USER -p $PASSWORD -j $JSON
+
 Generating an activity report
 -----------------------------
 
+This report allows you to generate an odt file (when applicable) for each week spent for a customer.
+
 See scripts/run_report:
 
-    JSON='../test/resources/report-example.json'
-    nodejs ../commands/activity.js report -u $USER -p $PASSWORD -j $JSON
+    JSON='templates/report-bl.json'
+    nodejs commands/activity.js report -u $USER -p $PASSWORD -j $JSON
 
 Generating a planning
 ---------------------
 
+This will generate a CSV file for a worker activity for a specific project code.
+
+Can be used by manager to send intervention dates for customer.
+
 See scripts/run_planning:
 
-    JSON='../test/resources/planning-example.json'
-    nodejs ../commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
+    JSON='templates/planning-csv.json'
+    nodejs commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
 
 Global note
 -----------
 
-Do not forget to update the json file at least for start and end dates.
+Do not forget to update the json file at least for start and end dates or specify them using -s and -e arguments.
 
 TESTING
 =======
