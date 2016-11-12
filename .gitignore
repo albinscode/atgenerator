@@ -1,0 +1,5 @@
+node_modules
+test/resources/test2.odt
+tags
+.cache/
+output/
