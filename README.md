@@ -37,7 +37,7 @@ Generating a diff to check your activity
 
 To avoid gaps between planning and time management this features will allow you to generate a diff between these two input modes.
 
-See scripts/run_followup:
+See scripts/run_diff:
 
     JSON='templates/diff.json'
     nodejs commands/activity.js diff -u $USER -p $PASSWORD -j $JSON
