@@ -1,0 +1,55 @@
+{
+    "startDate": "20160404",
+    "endDate": "20160930",
+    "odtTemplate": "../test/resources/AT_13977-02_CRA_modele.odt",
+
+    "patternDateFormat": "YYYYMMDD",
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "filenamePattern": "$$activityProject$$_$$lastDayOfWeek$$.odt",
+    "filepath": "../output/avi",
+
+    "customerCompany": "Berger-Levrault",
+    "customerContact": "M. Rimassa",
+    "customerAddress1": "64, rue Jean Rostand",
+    "customerAddress2": "31670 LABEGE",
+
+    "_documentFooterComment": "This allows to inject variables contained within the JSON",
+    "documentFooter": "$$companyFull$$",
+
+    "companyFull": "LINAGORA GSO",
+    "companyShort": "LINAGORA",
+    "companyAddress1": "75, route de Revel",
+    "companyAddress2": "31000 TOULOUSE",
+    "companyResponsible": "G. Valentin",
+    "companyConsultant": "A. Vigier",
+    "companyPhone": "+33 (0)5 62 19 24 91",
+    "companyFax": "+33 (0)1 46 96 63 64",
+    "companySiret": "SIRET 414 316 125 000 64",
+    "companyTVA": "TVA FR87 414 316 125",
+    "companyCapital": "SA au capital de 166 680 €",
+
+    "_companyLogoComment": "TODO",
+    "companyLogo": "linagora.png",
+
+    "activityProject": "14505-01",
+    "activityLabel": "AT 60 jours",
+    "activityDescription": "Développements modules Espace Clients",
+    "activityDate": null,
+    "orderNumber": "CA114850",
+
+    "_computedFieldsComment": "Here are the computed fields",
+    "activityWeek": "16",
+    "activityMonth": "Mars",
+    "activityYear": "2016",
+    "activityTotal": "0",
+
+    "days": [
+        {"day1": "11", "AM1": true, "PM1": true, "description": ""},
+        {"day2": "12", "AM2": true, "PM2": true, "description": ""},
+        {"day3": "13", "AM3": true, "PM2": true, "description": ""},
+        {"day4": "14", "AM4": false, "PM2": false, "description": ""},
+        {"day5": "15", "AM5": false, "PM2": false, "description": ""}
+    ]
+
+
+}
