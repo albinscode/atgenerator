@@ -1,8 +1,6 @@
 PREREQUISITES
 =============
 
-Nodejs shall be installed, e.g. `sudo apt-get install nodejs` on debian systems.
-
 Nodejs shall be installed, e.g. `sudo apt-get install nodejs nodejs-legacy` on debian systems.
 
 npm shall be installed, e.g. `sudo apt-get install npm` on debian systems.
