@@ -4,36 +4,12 @@ require('should');
 require('mocha');
 var ConfigurationTests = require('./configuration-tests');
 
-function parsePlanning(month, expected, done) {
+function parsePlanning(month) {
     var PlanningParser = require('../lib/PlanningParser');
 
-    var parser = new PlanningParser('VIGIER', '13977-02');
-    fs.readFile('test/resources/planning-' + month + '.html', function (err, data) {
-        if (err) throw err;
-        var daysWorked = parser.parse(data);
-        var days = 0;
-        if (daysWorked != null) {
-            for (var i = 0; i < daysWorked.length; i++) {
-                console.log(i + ' ' + daysWorked[i]);
-                if (daysWorked[i]) {
-                    days = days + 1;
-                }
-            }
-        }
-        days.should.be.equal(expected);
-        // Some specific checks for june
-        if (month == 'june') {
-            daysWorked[0].should.be.equal(true);
-            daysWorked[1].should.be.equal(true);
-            daysWorked[2].should.be.equal(true);
-            daysWorked[3].should.be.equal(true);
-            daysWorked[10].should.be.equal(true);
-            daysWorked[11].should.be.equal(true);
-            daysWorked[12].should.be.equal(true);
-            daysWorked[13].should.be.equal(true);
-        }
-        done();
-    });
+    var parser = new PlanningParser('VIGIER');
+    var data = fs.readFileSync('test/resources/planning-' + month + '.html');
+    return parser.parse(data);
 }
 
 describe('>>>> Planning parser tests', function() {
@@ -66,9 +42,24 @@ describe('>>>> Planning parser tests', function() {
         });
     });
     it('should parse planning july', function(done) {
-        parsePlanning('july', 17, done);
+        var days = parsePlanning('july');
+        days.forEach(function(value, key) {
+            console.log(key + " : " + value);
+        });
+
+        // Two half days with different project codes for same day
+        days[22].should.startWith('13977-02');
+        days[23].should.startWith('14426-01');
+
+        // Saturday and Sunday shall be not staffed
+        days[30].should.be.equal('Not staffed');
+        days[31].should.be.equal('Not staffed');
+        days[32].should.be.equal('Not staffed');
+        days[33].should.be.equal('Not staffed');
+
+        done();
     });
     it('should parse planning june', function(done) {
-        parsePlanning('june', 20, done);
+        parsePlanning('june');
     });
 });
