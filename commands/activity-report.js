@@ -17,7 +17,7 @@ program
     .option('-F --followup', 'to generate the followup due every 6 months')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
-    .option('-p --activityProject <activityProject>', 'the activity code to filter')
+    .option('-a --activityProject <activityProject>', 'the activity code to filter')
     .parse(process.argv);
 
     var features = [ 'user', 'password', 'json'];
