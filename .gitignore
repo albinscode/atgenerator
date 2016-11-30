@@ -1,5 +1,14 @@
 node_modules
 test/resources/test2.odt
+test/resources/content-replaced.xml
+test/resources/content.xml
 tags
 .cache/
 output/
+scripts/common.sh
+scripts/run_diff.sh
+scripts/run_followup.sh
+scripts/run_planning.sh
+scripts/run_planning_without_args.sh
+scripts/run_report.sh
+
