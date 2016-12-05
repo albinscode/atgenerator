@@ -14,9 +14,10 @@ program
     .option('-f --format', 'the format to use: csv or console')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
+    .option('-w --worker <worker>', 'the worker to display associated planning')
     .parse(process.argv);
 
-    commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ]).then(function(answers) {
+    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ]).then(function(answers) {
         performCommand();
     })
     .catch(function(reason) {
