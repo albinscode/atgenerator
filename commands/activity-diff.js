@@ -12,7 +12,8 @@ program
     .option('-e --endDate <endDate>', 'the ending date')
     .parse(process.argv);
 
-commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ]).then(function(answers) {
+var json = utils.createJsonObject(program.json, program);
+commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ], json).then(function(answers) {
     performCommand();
 })
 .catch(function(reason) {

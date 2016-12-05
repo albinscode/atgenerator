@@ -17,7 +17,8 @@ program
     .option('-w --worker <worker>', 'the worker to display associated planning')
     .parse(process.argv);
 
-    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ]).then(function(answers) {
+    var json = utils.createJsonObject(program.json, program);
+    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then(function(answers) {
         performCommand();
     })
     .catch(function(reason) {
