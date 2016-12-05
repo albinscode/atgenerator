@@ -25,7 +25,8 @@ program
     if (!program.followup) {
         features.push('activityProject');
     }
-    commandUtils.displayPrompt(program, features).then(function(answers) {
+    var json = utils.createJsonObject(program.json, program);
+    commandUtils.displayPrompt(program, features, json).then(function(answers) {
         performCommand();
     })
     .catch(function(reason) {
