@@ -1,3 +1,4 @@
-source "scripts/common.sh"
+#!/bin/sh
+. "scripts/common.sh"
 JSON="templates/report-bl.json"
 nodejs commands/activity.js report -u $USER -j $JSON $@
