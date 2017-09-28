@@ -18,7 +18,7 @@ Here are the detailed steps to generate your followup report.
 Prerequisites
 ---
 
-Node shall be installed and application shall be properly installed (see [[README file|readme.md]]).
+Node shall be installed and application shall be properly installed (see the README.md page).
 
 Of course your time management shall be filled online!
 

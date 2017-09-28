@@ -46,9 +46,9 @@ This report allows you to generate an ods file with your whole activity set by w
 See scripts/run_followup:
 
     JSON='templates/followup.json'
-    nodejs commands/activity.js report -u $USER -p $PASSWORD -j $JSON -F
+    node commands/activity.js report -u $USER -p $PASSWORD -j $JSON -F
 
-For a more detailed example see the [[dedicated page|followup_report]].
+For a more detailed example see the followup_report.md page.
 
 Generating a diff to check your activity
 ----------------------------------------
@@ -58,7 +58,7 @@ To avoid gaps between planning and time management this features will allow you 
 See scripts/run_diff:
 
     JSON='templates/diff.json'
-    nodejs commands/activity.js diff -u $USER -p $PASSWORD -j $JSON
+    node commands/activity.js diff -u $USER -p $PASSWORD -j $JSON
 
 Generating an activity report
 -----------------------------
@@ -68,7 +68,7 @@ This report allows you to generate an odt file (when applicable) for each week s
 See scripts/run_report:
 
     JSON='templates/report-bl.json'
-    nodejs commands/activity.js report -u $USER -p $PASSWORD -j $JSON
+    node commands/activity.js report -u $USER -p $PASSWORD -j $JSON
 
 Generating a planning
 ---------------------
@@ -80,7 +80,7 @@ Can be used by manager to send intervention dates for customer.
 See scripts/run_planning:
 
     JSON='templates/planning-csv.json'
-    nodejs commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
+    node commands/activity.js planning -u $USER -p $PASSWORD -j $JSON
 
 Global note
 -----------
@@ -117,7 +117,7 @@ To ease the use of the commands, the following bash could be created:
     AT="/home/avigier/git/atgenerator"
     JSON="$AT/perso/current-planning.json"
     source $AT/scripts/common.sh
-    nodejs $AT/commands/activity.js planning -u $USER -p $PASSWORD --json $JSON $@
+    node $AT/commands/activity.js planning -u $USER -p $PASSWORD --json $JSON $@
 
 
 Then the following aliases can be used for example:
