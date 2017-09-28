@@ -5,7 +5,9 @@ Nodejs shall be installed, e.g. `sudo apt-get install nodejs nodejs-legacy` on d
 
 npm shall be installed, e.g. `sudo apt-get install npm` on debian systems.
 
-This application has been tested with a version 0.10.25.
+This application has been tested with node 6 and has been tested successfully with node 7.
+
+This has been also tested successfully on Windows 10 too.
 
 INSTALLATION
 ============
@@ -18,6 +20,10 @@ In this project root just run `npm install` to get all node dependencies (intern
 RUNNING
 =======
 
+Use the common script that references your environment.
+
+    cp scripts/common.sh.sample scripts/common.sh
+
 Update the scripts/common.sh file to fit your environment.
 
 
@@ -25,6 +31,12 @@ Generic usage
 -------------
 
 Each time an argument won't be supplied in the command line it will be interactively asked for input.
+
+Several scripts (suffixed with .sample) are provided to show a basic usage of the command.
+
+It is up to you to adapt it to fit your needs.
+
+Same thing with json files. Some json files are provided to show input parameters. Read them carefully and adapt them.
 
 Generating a followup report
 -----------------------------
@@ -35,6 +47,8 @@ See scripts/run_followup:
 
     JSON='templates/followup.json'
     nodejs commands/activity.js report -u $USER -p $PASSWORD -j $JSON -F
+
+For a more detailed example see the [[dedicated page|followup_report]].
 
 Generating a diff to check your activity
 ----------------------------------------
