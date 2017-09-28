@@ -1,0 +1,32 @@
+{
+  "name": "atgenerator",
+  "version": "0.0.0",
+  "description": "Allows to generate all your AT activity :)",
+  "main": "main.js",
+  "dependencies": {
+    "MD5": "~1.3.0",
+    "cheerio": "~0.20.0",
+    "commander": "~2.9.0",
+    "inquirer": "^1.1.2",
+    "jszip": "~3.0.0",
+    "log4js": "~0.6.36",
+    "mkdirp": "~0.5.1",
+    "mocha": "~2.5.2",
+    "moment": "~2.13.0",
+    "moment-period": "git+https://github.com/albinscode/moment-period.git",
+    "od-provider": "git+https://github.com/albinscode/od-provider.git",
+    "od-merger": "git+https://github.com/albinscode/od-merger.git",
+    "npmlog": "^4.0.0",
+    "promise": "~7.1.1",
+    "replaceall": "~0.1.6",
+    "request": "~2.72.0",
+    "request-debug": "~0.2.0",
+    "should": "~8.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec --recursive"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}

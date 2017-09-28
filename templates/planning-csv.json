@@ -1,0 +1,18 @@
+{
+    "_startDateComment": "If no start date is provided, the current month will be used.",
+    "startDate": "20160901",
+    "endDate": "20160930",
+    "worker": "VIGIER",
+    "activityProject": "13977-03",
+
+    "_groupIdComment": "The default group is Linagora GSO, you can assign another group by searching the associated number in the OBM planning. If not specified it will use the default group id of your account profile.",
+    "groupId": "421",
+
+    "csvSeparator": ",",
+    "patternDateFormat": "DD/MM/YYYY",
+
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "_filenamePatternComment2": "If no pattern is specified it will be output directly on the console",
+    "filenamePattern": "$$activityProject$$_$$worker$$.csv",
+    "filepath": "output/avi"
+}
