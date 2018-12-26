@@ -40,5 +40,5 @@ function performCommand() {
     var json = utils.createJsonObject(program.json, program);
     //log.verbose('report command', JSON.stringify(json));
     var connectionProperties = { user: program.user, password: program.password };
-    generator.generate(json, connectionProperties, program.followup);
+    generator.generate(json, connectionProperties, program.followup, program.monthlyAtReport);
 }
