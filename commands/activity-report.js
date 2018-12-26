@@ -15,6 +15,7 @@ program
     .option('-j --json <json>', 'json data to use for report')
     .option('-f --format', 'the format to use: csv or console')
     .option('-F --followup', 'to generate the followup due every 6 months')
+    .option('-M --monthlyAtReport', 'to generate the monthly at report (used by agency director)')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-a --activityProject <activityProject>', 'the activity code to filter')
