@@ -1,6 +1,6 @@
 {
-    "startDate": "20181101",
-    "endDate": "20181130",
+    "startDate": "20181001",
+    "endDate": "20181231",
     "odtTemplate": "templates/AT_CRA_mois.odt",
 
     "patternDateFormat": "YYYYMMDD",
@@ -31,7 +31,7 @@
     "_companyLogoComment": "TODO",
     "companyLogo": "linagora.png",
 
-    "activityProject": "13977-02",
+    "activityProject": "13977-07",
     "activityLabel": "AT 60 jours",
     "activityDescription": "Développements modules Espace Clients",
     "activityDate": null,
@@ -44,11 +44,6 @@
     "activityTotal": "0",
 
     "days": [
-        {"day1": "11", "AM1": true, "PM1": true, "description": ""},
-        {"day2": "12", "AM2": true, "PM2": true, "description": ""},
-        {"day3": "13", "AM3": true, "PM2": true, "description": ""},
-        {"day4": "14", "AM4": false, "PM2": false, "description": ""},
-        {"day5": "15", "AM5": false, "PM2": false, "description": ""}
     ]
 
 
