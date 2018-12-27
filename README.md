@@ -125,3 +125,14 @@ Then the following aliases can be used for example:
     alias myjob=cd /home/avigier/git/atgenerator/ && ./scripts/run_planning.sh
     alias myjobnext="cd /home/avigier/git/atgenerator/ && ./scripts/run_planning.sh nextmonth"
 
+CUSTOMIZING REPORTS
+===================
+
+Provided reports are only for example. You can create your own.
+
+The basic usage is to:
+
+* provide an odt or ods file (microsoft office not supported)
+* create fields for each data to inject
+* each field will have a value surrounded by double dollars ($$) in order to be understood by the engine
+* to see all available fields, you can check provided templates in `template` directory
