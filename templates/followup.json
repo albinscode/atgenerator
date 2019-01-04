@@ -1,6 +1,6 @@
 {
-    "startDate": "20160404",
-    "endDate": "20160930",
+    "startDate": "20181029",
+    "endDate": "20190104",
     "odtTemplate": "templates/calendrier-declaratif-temps_standard_modele.ods",
 
     "patternDateFormat": "YYYYMMDD",
@@ -10,7 +10,7 @@
     "filenameFinalPattern": "followup.ods",
     "filepath": "output/avi",
 
-    "companyResponsible": "G. Valentin",
+    "companyResponsible": "B. Escudié",
     "companyConsultantFirstName": "Albin",
     "companyConsultantLastName": "Vigier",
 
