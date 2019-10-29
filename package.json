@@ -12,7 +12,7 @@
     "log4js": "~0.6.36",
     "mkdirp": "~0.5.1",
     "mocha": "~2.5.2",
-    "moment": "~2.13.0",
+    "moment": "~2.24.0",
     "moment-period": "git+https://github.com/albinscode/moment-period.git",
     "od-provider": "git+https://github.com/albinscode/od-provider.git",
     "od-merger": "git+https://github.com/albinscode/od-merger.git",
