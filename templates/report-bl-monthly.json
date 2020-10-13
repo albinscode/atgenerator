@@ -1,6 +1,6 @@
 {
-    "startDate": "20181001",
-    "endDate": "20181231",
+    "startDate": "20200701",
+    "endDate": "20200930",
     "odtTemplate": "templates/AT_CRA_mois.odt",
 
     "patternDateFormat": "YYYYMMDD",
@@ -32,8 +32,8 @@
     "_companyLogoComment": "TODO",
     "companyLogo": "linagora.png",
 
-    "activityProject": "13977-07",
-    "activityLabel": "AT 60 jours",
+    "activityProject": "13977-10",
+    "activityLabel": "AT S1 2020",
     "activityDescription": "Développements modules Espace Clients",
     "activityDate": null,
     "orderNumber": "CA114850",
