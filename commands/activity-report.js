@@ -2,11 +2,11 @@
 var program = require('commander');
 var inquirer = require('inquirer');
 var fs = require('fs');
-var ActivityGenerator = require('../lib/ActivityGenerator');
+var ActivityGenerator = require('../lib/generator/ActivityGenerator');
 var Promise = require('promise');
-var log = require('../lib/LogBridge');
-var commandUtils = require('../lib/CommandUtils.js');
-var utils = require('../lib/Utils');
+var log = require('../lib/util/LogBridge');
+var commandUtils = require('../lib/util/CommandUtils.js');
+var utils = require('../lib/util/Utils');
 
 program
     .version('1.0.0')

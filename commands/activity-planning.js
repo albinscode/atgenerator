@@ -2,9 +2,9 @@
 var program = require('commander');
 var moment = require('moment');
 var fs = require('fs');
-var log = require('../lib/LogBridge');
-var commandUtils = require('../lib/CommandUtils.js');
-var utils = require('../lib/Utils');
+var log = require('../lib/util/LogBridge');
+var commandUtils = require('../lib/util/CommandUtils.js');
+var utils = require('../lib/util/Utils');
 
 program
     .version('1.0.0')
@@ -29,7 +29,7 @@ program
  * Performs the planning command wether it is from interactive or non interactive mode.4
  */
 function performCommand() {
-    var PlanningGenerator = require('../lib/PlanningGenerator');
+    var PlanningGenerator = require('../lib/generator/PlanningGenerator');
 
     var generator = new PlanningGenerator();
     var json = utils.createJsonObject(program.json, program);

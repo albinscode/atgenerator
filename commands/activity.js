@@ -1,4 +1,4 @@
-var log = require('../lib/LogBridge');
+var log = require('../lib/util/LogBridge');
 
 log.info('| -- Welcome to activity utilities --|');
 

@@ -7,7 +7,7 @@ var ConfigurationTests = require('./configuration-tests');
 describe('>>>> Whole report tests', function() {
     this.timeout(10000);
     it('should connect report', function (done) {
-        var LinagoraConnection = require('../lib/LinagoraConnection');
+        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
 
         var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
 
@@ -21,7 +21,7 @@ describe('>>>> Whole report tests', function() {
         }).should.not.throw();
     });
     it('should parse report', function(done) {
-        var TimeManagementParser = require('../lib/TimeManagementParser');
+        var TimeManagementParser = require('../lib/parser/TimeManagementParser');
 
         var parser = new TimeManagementParser('13977-02');
         fs.readFile('test/resources/report-may.html', function (err, data) {
@@ -37,7 +37,7 @@ describe('>>>> Whole report tests', function() {
     });
     it('should fill report', function(done) {
 
-        var DeclarationFiller = require('../lib/DeclarationFiller.js');
+        var DeclarationFiller = require('../lib/output/DeclarationFiller.js');
 
         fs.readFile('test/resources/report-example.json', function (err, data) {
             if (err) throw err;
@@ -68,7 +68,7 @@ describe('>>>> Whole report tests', function() {
     });
     it('Should check the dates', function(done) {
 
-        var ActivityGenerator = require('../lib/ActivityGenerator.js');
+        var ActivityGenerator = require('../lib/generator/ActivityGenerator.js');
         var generator = new ActivityGenerator();
         var moment = require('moment');
         function checkDates(date1, date2) {

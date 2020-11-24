@@ -1,5 +1,5 @@
-var utils = require('../lib/Utils');
-var commandUtils = require('../lib/CommandUtils.js');
+var utils = require('../lib/util/Utils');
+var commandUtils = require('../lib/util/CommandUtils.js');
 
 // This is the sub command to generate the diff between time management and planning
 var program = require('commander');

@@ -2,7 +2,7 @@ require('should');
 require('mocha');
 var replaceall = require("replaceall");
 
-var log = require('../lib/LogBridge.js');
+var log = require('../lib/util/LogBridge.js');
 
 describe('>>>> filler tests', function() {
     this.timeout(10000);

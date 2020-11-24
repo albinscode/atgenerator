@@ -6,7 +6,7 @@ require('mocha');
 describe('>>>> Connection cache tests', function() {
     this.timeout(10000);
     it('should create cache file', function(done) {
-        var LinagoraConnection = require('../lib/LinagoraConnection');
+        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
 
         var connection = new LinagoraConnection({});
 

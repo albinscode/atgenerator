@@ -5,7 +5,7 @@ require('mocha');
 var ConfigurationTests = require('./configuration-tests');
 
 function parsePlanning(month) {
-    var PlanningParser = require('../lib/PlanningParser');
+    var PlanningParser = require('../lib/parser/PlanningParser');
 
     var parser = new PlanningParser('VIGIER');
     var data = fs.readFileSync('test/resources/planning-' + month + '.html');
@@ -15,7 +15,7 @@ function parsePlanning(month) {
 describe('>>>> Planning parser tests', function() {
     this.timeout(10000);
     it('should create planning files', function(done) {
-        var LinagoraConnection = require('../lib/LinagoraConnection');
+        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
 
         // By default, we generate them once with account avigier
         done();
@@ -32,7 +32,7 @@ describe('>>>> Planning parser tests', function() {
         });
     });
     it('should connect planning', function(done) {
-        var LinagoraConnection = require('../lib/LinagoraConnection');
+        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
 
         var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
         // To get the content directly as a return

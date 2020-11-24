@@ -5,7 +5,7 @@ require('mocha');
 var ConfigurationTests = require('./configuration-tests');
 
 function parseTime(month) {
-    var TimeManagementParser = require('../lib/TimeManagementParser');
+    var TimeManagementParser = require('../lib/parser/TimeManagementParser');
 
     var parser = new TimeManagementParser();
     var data = fs.readFileSync('test/resources/time-' + month + '.html');
