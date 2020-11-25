@@ -1,10 +1,11 @@
 // This is the sub command to generate the planning of a worker for given period.
-var program = require('commander');
-var moment = require('moment');
-var fs = require('fs');
-var log = require('../lib/util/LogBridge');
-var commandUtils = require('../lib/util/CommandUtils.js');
-var utils = require('../lib/util/Utils');
+const program = require('commander');
+const moment = require('moment');
+const fs = require('fs');
+const log = require('../lib/util/LogBridge');
+const commandUtils = require('../lib/util/CommandUtils.js');
+const utils = require('../lib/util/Utils');
+const generator = require('../lib/generator/PlanningGenerator')
 
 program
     .version('1.0.0')
@@ -15,27 +16,14 @@ program
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-w --worker <worker>', 'the worker to display associated planning')
-    .parse(process.argv);
+    .parse(process.argv)
 
-    var json = utils.createJsonObject(program.json, program);
-    commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then(function(answers) {
-        performCommand();
-    })
-    .catch(function(reason) {
-        log.error('planning command', reason);
-    });
-
-/**
- * Performs the planning command wether it is from interactive or non interactive mode.4
- */
-function performCommand() {
-    var PlanningGenerator = require('../lib/generator/PlanningGenerator');
-
-    var generator = new PlanningGenerator();
-    var json = utils.createJsonObject(program.json, program);
-
-    var connectionProperties = { user: program.user, password: program.password, groupId: json.groupId };
-
-    generator.generate(json, connectionProperties);
-}
-
+let json = utils.createJsonObject(program.json, program)
+commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then((answers) => {
+    generator(json, {
+        user: program.user,
+        password: program.password,
+        groupId: json.groupId }
+    )
+})
+.catch(reason => log.error('planning command', reason))
