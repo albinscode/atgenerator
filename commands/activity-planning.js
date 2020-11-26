@@ -1,10 +1,10 @@
 // This is the sub command to generate the planning of a worker for given period.
-const program = require('commander');
-const moment = require('moment');
-const fs = require('fs');
-const log = require('../lib/util/LogBridge');
-const commandUtils = require('../lib/util/CommandUtils.js');
-const utils = require('../lib/util/Utils');
+const program = require('commander')
+const moment = require('moment')
+const fs = require('fs')
+const log = require('../lib/util/LogBridge')
+const displayPrompt = require('../lib/util/CommandUtils.js')
+const createJsonObject = require('../lib/util/Utils')
 const generator = require('../lib/generator/PlanningGenerator')
 
 program
@@ -18,8 +18,8 @@ program
     .option('-w --worker <worker>', 'the worker to display associated planning')
     .parse(process.argv)
 
-let json = utils.createJsonObject(program.json, program)
-commandUtils.displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then((answers) => {
+let json = createJsonObject(program.json, program)
+displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then((answers) => {
     generator(json, {
         user: program.user,
         password: program.password,
