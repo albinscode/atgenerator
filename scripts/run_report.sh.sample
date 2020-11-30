@@ -1,4 +1,4 @@
 #!/bin/sh
 . "scripts/common.sh"
 JSON="templates/report-bl.json"
-node commands/activity.js report -u $USER -j $JSON $@
+node commands/activity.js report -u $USER -p $PASSWORD -j $JSON $@

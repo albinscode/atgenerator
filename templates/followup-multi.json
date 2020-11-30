@@ -1,0 +1,31 @@
+{
+    "startDate": "20201007",
+    "endDate": "20201120",
+    "odtTemplate": "templates/calendrier-declaratif-temps_standard_modele.ods",
+
+    "patternDateFormat": "YYYYMMDD",
+    "patternHumanDateFormat": "DD/MM/YYYY",
+    "_filenamePatternComment": "The file name pattern can contain any previous variable plus 'firstDayOfWeek' and 'lastDayOfWeek'",
+    "filenamePattern": "$$firstDayOfWeek$$.ods",
+    "filenameFinalPattern": "followup.ods",
+    "filepath": "output/avi",
+
+    "_groupIdComment": "The default group is Linagora GSO, you can assign another group by searching the associated number in the OBM planning. If not specified it will use the default group id of your account profile.",
+    "groupId": "421",
+
+    "companyResponsible": "B. Escudié",
+    "companyConsultantFirstName": "Albin",
+    "companyConsultantLastName": "Vigier",
+
+    "activityDate": null,
+
+    "_computedFieldsComment": "Here are the computed fields",
+
+    "_activityHalfDay": "3h45",
+    "_activityFullDay": "07h30",
+    "activityHalfDay": "2h30",
+    "activityFullDay": "05h00",
+    "activityMinutesPerDay": 300,
+
+    "days": []
+}

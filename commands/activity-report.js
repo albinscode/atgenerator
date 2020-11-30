@@ -18,7 +18,6 @@ program
     .option('-M --monthlyAtReport', 'to generate the monthly at report (used by agency director)')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
-    .option('-a --activityProject <activityProject>', 'the activity code to filter')
     .parse(process.argv)
 
 let features = [ 'user', 'password', 'json']
@@ -36,7 +35,10 @@ displayPrompt(program, features, json).then((answers) => {
         user: program.user,
         password: program.password
     }
-    generator.generate(json, connectionProperties, program.followup, program.monthlyAtReport)
+    generator.generate(json, connectionProperties, {
+        followup: program.followup,
+        monthlyAtReport: program.monthlyAtReport
+    })
 })
 .catch(function(reason) {
     log.error('report command', reason)
