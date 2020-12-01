@@ -21,6 +21,7 @@ program
     .option('-f --format', 'the format to use: csv or console')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
+    .option('-C --cache', 'cache activation')
     .parse(process.argv)
 
 let features = [ 'user', 'password', 'json']
@@ -35,7 +36,8 @@ displayPrompt(program, features, json).then(async (answers) => {
     let connectionProperties = {
         user: program.user,
         password: program.password,
-        groupId: json.groupId
+        groupId: json.groupId,
+        cacheEnabled: program.cache,
     }
 
     // we load the workers file that contains all worker

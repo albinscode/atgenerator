@@ -16,6 +16,7 @@ program
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-w --worker <worker>', 'the worker to display associated planning')
+    .option('-C --cache', 'cache activation')
     .parse(process.argv)
 
 let json = createJsonObject(program.json, program)
@@ -23,7 +24,8 @@ displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then((ans
     generator(json, {
         user: program.user,
         password: program.password,
-        groupId: json.groupId }
-    )
+        groupId: json.groupId,
+        cacheEnabled: program.cache,
+    })
 })
 .catch(reason => log.error('planning command', reason))
