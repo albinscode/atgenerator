@@ -1,0 +1,14 @@
+{
+    "PAYSANT": {
+        "activityFullDay": "04h00",
+        "activityHalfDay": "2h00",
+        "companyConsultantFirstName": "Paysant",
+        "companyConsultantLastName": "Patrick"
+    },
+    "VIGIER": {
+        "activityFullDay": "05h00",
+        "activityHalfDay": "2h30",
+        "companyConsultantFirstName": "Albin",
+        "companyConsultantLastName": "Vigier"
+    }
+}

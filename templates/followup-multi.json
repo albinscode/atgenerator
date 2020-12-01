@@ -17,6 +17,10 @@
     "companyConsultantFirstName": "Albin",
     "companyConsultantLastName": "Vigier",
 
+
+    "_workersFileComment": "a file containing all workers that will be used for a multi followup",
+    "workersFile": "templates/workers.json",
+
     "activityDate": null,
 
     "_computedFieldsComment": "Here are the computed fields",

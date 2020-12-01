@@ -1,0 +1,4 @@
+#!/bin/sh
+. "scripts/common.sh"
+JSON="templates/followup-multi.json"
+node commands/activity.js report-multi -u $USER -p $PASSWORD -j $JSON $@

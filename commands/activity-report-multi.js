@@ -38,22 +38,9 @@ displayPrompt(program, features, json).then(async (answers) => {
         groupId: json.groupId
     }
 
-    const users = {
-        VIGIER: {
-            activityHalfDay: '2h30',
-            activityFullDay: '05h00',
-            companyResponsible : 'B. Escudié',
-            companyConsultantFirstName : 'Albin',
-            companyConsultantLastName : 'Vigier',
-        },
-        PAYSANT: {
-            activityHalfDay: '2h00',
-            activityFullDay: '04h00',
-            companyResponsible : 'B. Escudié',
-            companyConsultantFirstName : 'Paysant',
-            companyConsultantLastName : 'Patrick',
-        },
-    }
+    // we load the workers file that contains all worker
+    // we want to integrate for our report
+    const users = require('../' + json.workersFile)
 
     // we now browse each user related config to generate
     // dedicated followup report
@@ -80,7 +67,6 @@ displayPrompt(program, features, json).then(async (answers) => {
                 monthlyAtReport: false,
                 parser: 'planning'
             })
-        console.log('worker')
     }
 })
 .catch(function(reason) {
