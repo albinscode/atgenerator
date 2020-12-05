@@ -12,6 +12,8 @@ const Promise = require('promise')
 const log = require('../lib/util/LogBridge')
 const displayPrompt = require('../lib/util/CommandUtils.js')
 const createJsonObject = require('../lib/util/Utils')
+const linagoraConnection = require('../lib/leech/LinagoraConnection')
+const moment = require('moment')
 
 program
     .version('1.0.0')
@@ -22,9 +24,11 @@ program
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-C --cache', 'cache activation')
-    .option('-W --workspace', 'defines the linshare workspace uuid to use for uploading')
+    .option('-W --linshareWorkspace', 'defines the linshare workspace uuid to use for uploading')
     .option('-L --linshare', 'uploads file(s) on linshare using given workspace uuuid')
     .parse(process.argv)
+
+let folderUuid = null
 
 let features = [ 'user', 'password', 'json']
 
@@ -74,10 +78,21 @@ displayPrompt(program, features, json).then(async (answers) => {
 
         // we upload on linshare
         if (program.linshare) {
-            if (jsonUser.workspace === undefined) {
+            if (jsonUser.linshareWorkspace === undefined) {
                 throw new Error('You have to provide a workspace uuuid if you want to upload files on Linshare')
             }
+            // we create a wrapping folder if not already created
+            if (!folderUuid) {
+                const folder = moment().format('YYYYMMDD')
+                log.info('multi', 'Creating folder %j in linshare under workspace uuid %j and sub folder %j', folder, jsonUser.linshareWorkspace, jsonUser.linshareFolder)
+                folderUuid = await linagoraConnection.createLinshareFolder(folder, jsonUser.linshareFolder, jsonUser.linshareWorkspace)
+            }
 
+            // TODO a better way to get filename without rebuilding it? From JsonRules?
+            const filename = `${jsonUser.filepath}/${jsonUser.filenameFinalPattern}`
+
+            log.info('multi', 'Uploading %j into linshare folder %j', filename, folderUuid)
+            await linagoraConnection.uploadLinshareFile(filename, folderUuid, jsonUser.linshareWorkspace)
         }
     }
 })

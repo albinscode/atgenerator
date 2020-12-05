@@ -17,6 +17,10 @@
     "companyConsultantFirstName": "Albin",
     "companyConsultantLastName": "Vigier",
 
+    "_linshareWorkspace": "the linshare workspace where to upload files",
+    "linshareWorkspace": "6f601740-0d99-47e4-af90-adcee6a40117",
+    "_linshareFolder": "the linshare workspace folder (under the workspace) where to upload files. Can be the workspace itself",
+    "linshareFolder": "6f601740-0d99-47e4-af90-adcee6a40117",
 
     "_workersFileComment": "a file containing all workers that will be used for a multi followup",
     "workersFile": "templates/workers.json",
