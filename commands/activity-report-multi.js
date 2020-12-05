@@ -22,6 +22,8 @@ program
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-C --cache', 'cache activation')
+    .option('-W --workspace', 'defines the linshare workspace uuid to use for uploading')
+    .option('-L --linshare', 'uploads file(s) on linshare using given workspace uuuid')
     .parse(process.argv)
 
 let features = [ 'user', 'password', 'json']
@@ -69,6 +71,14 @@ displayPrompt(program, features, json).then(async (answers) => {
                 monthlyAtReport: false,
                 parser: 'planning'
             })
+
+        // we upload on linshare
+        if (program.linshare) {
+            if (jsonUser.workspace === undefined) {
+                throw new Error('You have to provide a workspace uuuid if you want to upload files on Linshare')
+            }
+
+        }
     }
 })
 .catch(function(reason) {
