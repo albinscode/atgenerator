@@ -7,9 +7,9 @@ var ConfigurationTests = require('./configuration-tests');
 describe('>>>> Whole report tests', function() {
     this.timeout(10000);
     it('should connect report', function (done) {
-        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
+        const linagoraConnection = require('../lib/leech/LinagoraConnection');
 
-        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
+        var connection = linagoraConnection.init(ConfigurationTests.connectionProperties);
 
         // To generate the initial file with avigier account
         // connection.getTimePage('05', '2016', 'test/resources/report-may.html').should.not.throw();

@@ -15,13 +15,13 @@ function parsePlanning(month) {
 describe('>>>> Planning parser tests', function() {
     this.timeout(10000);
     it('should create planning files', function(done) {
-        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
+        const linagoraConnection = require('../lib/leech/LinagoraConnection');
 
         // By default, we generate them once with account avigier
         done();
         return;
         ConfigurationTests.connectionProperties.groupId = '421';
-        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
+        var connection = linagoraConnection.init(ConfigurationTests.connectionProperties);
         // To generate the inital files
         connection.getPlanningPage('07', '2016', 'test/resources/planning-july.html').then(function() {
             // To generate a file
@@ -32,9 +32,9 @@ describe('>>>> Planning parser tests', function() {
         });
     });
     it('should connect planning', function(done) {
-        var LinagoraConnection = require('../lib/leech/LinagoraConnection');
+        const linagoraConnection = require('../lib/leech/LinagoraConnection');
 
-        var connection = new LinagoraConnection(ConfigurationTests.connectionProperties);
+        var connection = linagoraConnection(ConfigurationTests.connectionProperties);
         // To get the content directly as a return
         connection.getPlanningPage('07', '2016').then(function(data) {
             //console.log(data.htmlContent);
