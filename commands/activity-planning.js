@@ -23,6 +23,8 @@ program
 
 let json = createJsonObject(program.json, program)
 displayPrompt(program, [ 'user', 'password', 'json', 'worker' ], json).then((answers) => {
+    // json has to be fetched because it has been lately provided by user
+    if (answers.json) json = createJsonObject(program.json, program)
     generator(json, {
         user: program.user,
         password: program.password,
