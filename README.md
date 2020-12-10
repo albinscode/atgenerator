@@ -15,6 +15,8 @@ INSTALLATION
 Firstly make you sure you are using node v6. If you use nvm just run `nvm use` inside the project.
 In this project root just run `npm install` to get all node dependencies (internet shall be accessible).
 
+If you want to access directly to the command on a linux system, you can install atgenerator as a global npm module like this `npm install -g atgenerator`.
+
 
 
 RUNNING

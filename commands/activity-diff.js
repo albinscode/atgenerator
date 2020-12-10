@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const createJsonObject = require('../lib/util/Utils')
 const displayPrompt = require('../lib/util/CommandUtils.js')
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // This is the sub command to generate the planning of a worker for given period.
 const program = require('commander')
 const moment = require('moment')

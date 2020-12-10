@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // This is the sub command to generate the activity report
 const program = require('commander')
 const inquirer = require('inquirer')

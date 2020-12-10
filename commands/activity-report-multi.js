@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // This is the sub command to generate the activity report
 // for several people.
 // It will be almost the same as activity-report but the main

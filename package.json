@@ -2,7 +2,15 @@
   "name": "atgenerator",
   "version": "0.0.0",
   "description": "Allows to generate all your AT activity :)",
-  "main": "main.js",
+  "main": "./commands/activity.js",
+  "__doc_": "Allows to reference each subcommands with shebang",
+  "bin": {
+      "atgenerator": "./commands/activity.js",
+      "atgenerator-diff": "./commands/activity-diff.js",
+      "atgenerator-planning": "./commands/activity-planning.js",
+      "atgenerator-report-multi": "./commands/activity-report-multi.js",
+      "atgenerator-report": "./commands/activity-report.js"
+  },
   "dependencies": {
     "MD5": "1.3.0",
     "axios": "0.21.0",
