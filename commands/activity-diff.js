@@ -2,6 +2,8 @@
 
 const createJsonObject = require('../lib/util/Utils')
 const displayPrompt = require('../lib/util/CommandUtils.js')
+const log = require('../lib/util/LogBridge')
+const DiffGenerator = require('../lib/generator/DiffGenerator')
 
 // This is the sub command to generate the diff between time management and planning
 let program = require('commander')
@@ -16,8 +18,7 @@ program
 
 let json = createJsonObject(program.json, program)
 
-commandUtils.displayPrompt(program, [ 'user', 'password', 'json' ], json).then((answers) => {
-    const DiffGenerator = require('../lib/DiffGenerator')
+displayPrompt(program, [ 'user', 'password', 'json' ], json).then((answers) => {
 
     let generator = new DiffGenerator()
     let json = createJsonObject(program.json, program)
