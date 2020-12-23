@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const createJsonObject = require('../lib/util/Utils')
+const createJsonObject = require('../lib/util/Utils').createJsonObject
 const displayPrompt = require('../lib/util/CommandUtils.js')
 const log = require('../lib/util/LogBridge')
 const DiffGenerator = require('../lib/generator/DiffGenerator')

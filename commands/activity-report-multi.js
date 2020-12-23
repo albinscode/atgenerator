@@ -13,7 +13,7 @@ const ActivityGenerator = require('../lib/generator/ActivityGenerator')
 const Promise = require('promise')
 const log = require('../lib/util/LogBridge')
 const displayPrompt = require('../lib/util/CommandUtils.js')
-const createJsonObject = require('../lib/util/Utils')
+const utils = require('../lib/util/Utils')
 const linagoraConnection = require('../lib/leech/LinagoraConnection')
 const moment = require('moment')
 
@@ -22,6 +22,7 @@ program
     .option('-u --user <user>', 'user to connect to OBM service')
     .option('-p --password <password>', 'password to connect to OBM service')
     .option('-j --json <json>', 'json data to use for report')
+    .option('-D --workingDirectory <workingDirectory>', 'the directory in which atgenerator will search for config files')
     .option('-f --format', 'the format to use: csv or console')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
@@ -34,13 +35,13 @@ let folderUuid = null
 
 let features = [ 'user', 'password', 'json']
 
-let json = createJsonObject(program.json, program)
+let json = utils.createJsonObject(program.json, program)
 
 displayPrompt(program, features, json).then(async (answers) => {
     let generator = new ActivityGenerator()
 
     // we use a global configuration (as for followup)
-    let json = createJsonObject(program.json, program)
+    let json = utils.createJsonObject(program.json, program)
     let connectionProperties = {
         user: program.user,
         password: program.password,
@@ -50,7 +51,7 @@ displayPrompt(program, features, json).then(async (answers) => {
 
     // we load the workers file that contains all worker
     // we want to integrate for our report
-    const users = require(__dirname + '/../' + json.workersFile)
+    const users = require(utils.getWorkingDirectory(json, '/../') + json.workersFile)
 
     // we now browse each user related config to generate
     // dedicated followup report

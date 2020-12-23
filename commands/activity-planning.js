@@ -6,7 +6,7 @@ const moment = require('moment')
 const fs = require('fs')
 const log = require('../lib/util/LogBridge')
 const displayPrompt = require('../lib/util/CommandUtils.js')
-const createJsonObject = require('../lib/util/Utils')
+const createJsonObject = require('../lib/util/Utils').createJsonObject
 const generator = require('../lib/generator/PlanningGenerator')
 
 program
