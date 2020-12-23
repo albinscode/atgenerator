@@ -24,6 +24,8 @@ program
     .option('-j --json <json>', 'json data to use for report')
     .option('-D --workingDirectory <workingDirectory>', 'the directory in which atgenerator will search for config files')
     .option('-f --format', 'the format to use: csv or console')
+    .option('-F --followup', 'to generate the followup due every 6 months')
+    .option('-M --monthlyAtReport', 'to generate the monthly at report (used by agency director)')
     .option('-s --startDate <startDate>', 'the starting date')
     .option('-e --endDate <endDate>', 'the ending date')
     .option('-C --cache', 'cache activation')
@@ -73,9 +75,9 @@ displayPrompt(program, features, json).then(async (answers) => {
         // we set worker
         jsonUser.worker = userId
 
-        await generator.generate({...jsonUser}, connectionProperties, {
-                followUpReport:  true,
-                monthlyAtReport: false,
+        await generator.generate(jsonUser, connectionProperties, {
+                followUpReport:  program.followup,
+                monthlyAtReport: program.monthlyAtReport,
                 parser: 'planning'
             })
 
