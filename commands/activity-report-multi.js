@@ -8,7 +8,6 @@
 // WARNING It will use the planning too instead of time management!
 const program = require('commander')
 const inquirer = require('inquirer')
-const fs = require('fs')
 const ActivityGenerator = require('../lib/generator/ActivityGenerator')
 const Promise = require('promise')
 const log = require('../lib/util/LogBridge')
