@@ -4,7 +4,7 @@ test/resources/content-replaced.xml
 test/resources/content.xml
 tags
 .cache/
-output/
+/output/
 scripts/common.sh
 scripts/run_diff.sh
 scripts/run_followup.sh
