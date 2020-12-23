@@ -50,7 +50,7 @@ displayPrompt(program, features, json).then(async (answers) => {
 
     // we load the workers file that contains all worker
     // we want to integrate for our report
-    const users = require('../' + json.workersFile)
+    const users = require(__dirname + '/../' + json.workersFile)
 
     // we now browse each user related config to generate
     // dedicated followup report
